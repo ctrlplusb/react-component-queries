@@ -81,7 +81,7 @@ function ComponentQueries(...queries) {
 
     return SizeMe({
       monitorWidth: true,
-      monitorHeight: true
+      monitorHeight: false
     })(ComponentWithComponentQueries);
   };
 }
