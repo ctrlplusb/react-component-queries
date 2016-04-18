@@ -37,3 +37,11 @@ export default ComponentQueries(
   (width) => width > 960 && width <=1024 ? { scale: 'desktop' } : {},
 )(MyComponent);
 ```
+
+## Install
+
+There is a peer-dependency on `react-sizeme`, so run the following command to install both libraries:
+
+```
+npm install react-sizeme react-component-queries --save
+```
