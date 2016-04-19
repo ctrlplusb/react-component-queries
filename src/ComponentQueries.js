@@ -15,7 +15,7 @@ const mergeWith = (x, y, fn) => {
   Object.keys(y).forEach(key => {
     if (x[key]) {
       result[key] = fn(x[key], y[key], key);
-    } else {
+    } else if (y[key]) {
       result[key] = y[key];
     }
   });
