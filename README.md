@@ -63,6 +63,8 @@ Below are a few super simple examples highlighting the usage and capabilities of
 
 __Example 1: Queries on your Component's width__
 
+By default the ComponentQueries higher order component only operates on width. This is a design decision as in most cases we only wish to query against width, therefore we ignore height changes to minimize any potential DOM spamming.  If you would like to operate on height too then please see Example 2.
+
 ```javascript
 import ComponentQueries from 'react-component-queries';
 
@@ -86,8 +88,6 @@ export default ComponentQueries(
 ```
 
 __Example 2: Queries on your Component's width AND height__
-
-By default the `ComponentQueries` higher order component only operates on width. This is a design decision as in most cases we only wish to query against `width`, therefore we ignore height changes to minimize any potential DOM spamming.
 
 If you would like to operate on height also then you must use the extended configuration mode shown below to enable monitoring on the height of your component:
 
