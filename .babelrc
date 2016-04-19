@@ -6,9 +6,6 @@
   "env": {
     "test": {
       "plugins": ["rewire"]
-    },
-    "production": {
-      "plugins": ["lodash"]
     }
   }
 }

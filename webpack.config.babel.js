@@ -14,13 +14,6 @@ const reactExternal = {
   amd: `react`
 };
 
-const reactDOMExternal = {
-  root: `ReactDOM`,
-  commonjs2: `react-dom`,
-  commonjs: `react-dom`,
-  amd: `react-dom`
-};
-
 const reactSizeMeExternal = {
   root: `SizeMe`,
   commonjs2: `react-sizeme`,
@@ -32,7 +25,6 @@ const config = {
   entry: path.resolve(__dirname, `./src/index.js`),
   externals: {
     react: reactExternal,
-    'react-dom': reactDOMExternal,
     'react-sizeme': reactSizeMeExternal
   },
   module: {
