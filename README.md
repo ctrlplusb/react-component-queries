@@ -23,6 +23,11 @@ There is a peer-dependency on `react-sizeme`, so run the following command to in
 npm install react-sizeme react-component-queries --save
 ```
 
+## Demo
+
+Yep, it works:<br />
+https://react-component-queries-demo-kroznlrebm.now.sh
+
 ## Overview
 
 This is a higher order component library that wraps up [`react-sizeme`](https://github.com/ctrlplusb/react-sizeme) to provide you with the capability to decorate your components with props based on queries against their width and/or height.
