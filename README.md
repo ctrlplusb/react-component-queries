@@ -25,7 +25,12 @@ import ComponentQueries from 'react-component-queries';
 class MyComponent extends Component {
   render() {
     return (
-      <div>My scale prop value is {this.props.scale}</div>
+      <div>
+        {/* We recieve the following props from our queries */}
+        I am at {this.props.scale} scale.<br />
+        I am {this.props.short ? 'short' : 'long'}<br />
+        I am {this.props.square ? 'square' : 'rectangular'}
+      </div>
     );
   }
 }
