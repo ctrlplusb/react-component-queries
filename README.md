@@ -107,6 +107,7 @@ class MyComponent extends Component {
   }
 }
 
+// NOTE: We are passing in a configuration object now.
 export default ComponentQueries({
   queries: [
     // Use just the width.
@@ -117,7 +118,7 @@ export default ComponentQueries({
     ({ width, height }) => width === height ? { square: true } : { square: false },
   ],
   sizeMeConfig: { monitorHeight: true }
-)(MyComponent);
+})(MyComponent);
 ```
 
 As you can see we expose a `sizeMeConfig`, please see the [`react-sizeme`](https://github.com/ctrlplusb/react-sizeme) for the full list of options that you can provide.
