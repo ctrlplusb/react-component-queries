@@ -52,7 +52,7 @@ npm install react-sizeme react-component-queries --save
 ## Demo
 
 Yep, it works:<br />
-https://react-component-queries-demo-kroznlrebm.now.sh
+https://react-component-queries-demo-qtbxtmivpq.now.sh
 
 ## Examples 
 
