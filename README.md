@@ -32,9 +32,13 @@ class MyComponent extends Component {
 
 export default ComponentQueries(
   // Provide as many query functions as you need.
-  (width) => width <= 330 ? { scale: 'mobile' } : {},
-  (width) => width > 330 && width <=960 ? { scale: 'tablet' } : {},
-  (width) => width > 960 && width <=1024 ? { scale: 'desktop' } : {},
+  ({ width }) => width <= 330 ? { scale: 'mobile' } : {},
+  ({ width }) => width > 330 && width <=960 ? { scale: 'tablet' } : {},
+  ({ width }) => width > 960 ? { scale: 'desktop' } : {},
+  // Pass in height too
+  ({ height }) => height > 200 ? { short: false } : { short: true },
+  // Or both
+  ({ width, height }) => width === height ? { square: true } : { square: false },
 )(MyComponent);
 ```
 

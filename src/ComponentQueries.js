@@ -20,12 +20,6 @@ function ComponentQueries(...queries) {
     `All provided queries for ComponentQueries should be functions.`
   );
 
-  function query(width, height) {
-    return queries.reduce((acc, cur) =>
-      Object.assign({}, acc, cur(width, height))
-    , {});
-  }
-
   return function WrapComponent(WrappedComponent) {
     class ComponentWithComponentQueries extends Component {
       state = {
@@ -55,12 +49,28 @@ function ComponentQueries(...queries) {
       }
 
       runQueries({ width, height }) {
-        const queryResult = query(width, height);
+        const queryResult = queries.reduce((acc, cur) =>
+          Object.assign({}, acc, cur({ width, height }))
+        , {});
 
         this.setState({ queryResult });
       }
 
+      checkForDuplicateProps() {
+        const provided = new Set(Object.keys(this.props));
+
+        Object.keys(this.state.queryResult).forEach(queryProp =>
+          invariant(
+            !provided.has(queryProp),
+            `Duplicate prop has been provided to Component with ComponentQueries: ${queryProp}`)
+        );
+      }
+
       render() {
+        // We need this guard to execute here in order to guarantee we have
+        // both the updated state and the passed in props.
+        this.checkForDuplicateProps();
+
         const { size, ...otherProps } = this.props; // eslint-disable-line no-unused-vars
 
         return (
