@@ -103,10 +103,11 @@ describeWithDOM(`Given the ComponentQueries library`, () => {
       const ComponentQueriedComponent = ComponentQueries({
         queries: [
           ({ width }) => width <= 100 ? { foo: `bar` } : {},
-          ({ width }) => width > 100 && width <= 500 ? { bob: `baz` } : {},
+          ({ width }) => width > 100 ? { bob: `baz` } : {},
           ({ height }) => height <= 100 ? { zip: `zap` } : {}
         ],
         sizeMeConfig: {
+          monitorWidth: true,
           monitorHeight: true
         }
       })((props) => { receivedProps = props; return <div></div>; });
@@ -137,30 +138,51 @@ describeWithDOM(`Given the ComponentQueries library`, () => {
 
       // Initial render
       mount(<ComponentQueriedComponent size={{ width: 100, height: 100 }} />);
-      expect(actualHeight).to.equal(undefined);
+      expect(actualHeight).to.equal(null);
     });
 
-    it(`Then it should throw an error when a duplicate prop is provided`, () => {
+    it(`Then duplicate props should be overridden when using the default conflict resolver`, () => {
+      let receivedProps;
+
       const ComponentQueriedComponent = ComponentQueries(
-        ({ width }) => width <= 100 ? { foo: `bar` } : {}
-      )(() => <div></div>);
+        ({ width }) => width <= 100 ? { foo: `bar` } : {},
+        ({ width }) => width <= 100 ? { foo: `baz` } : {},
+      )((props) => { receivedProps = props; return <div></div>; });
+
+      // Initial render with duplicate query result.
+      const mounted = mount(
+        <ComponentQueriedComponent size={{ width: 100, height: 100 }} />
+      );
+      expect(receivedProps).to.eql({ foo: `baz` });
+
+      // Set a custom prop that conflicts with the query result.
+      mounted.setProps({ foo: `bob` });
+      expect(receivedProps).to.eql({ foo: `bob` });
+    });
+
+    it(`Then a custom conflict resolver should behave as expected`, () => {
+      let receivedProps;
+
+      const ComponentQueriedComponent = ComponentQueries({
+        queries: [
+          ({ width }) => width <= 100 ? { foo: `bar` } : {},
+          ({ width }) => width <= 100 ? { foo: `bob` } : {}
+        ],
+        conflictResolver: (x, y, key) =>
+          key === `foo` ? x.concat(` `, y) : y
+      })((props) => { receivedProps = props; return <div></div>; });
 
       // Initial render duplicate prop
-      const onMount = () => mount(
-        <ComponentQueriedComponent foo="foo" size={{ width: 100, height: 100 }} />
-      );
-
-      expect(onMount).to.throw(/Duplicate prop has been provided/);
-
-      // Updated component duplicate prop
       const mounted = mount(
         <ComponentQueriedComponent size={{ width: 100, height: 100 }} />
       );
 
-      const updateComponent = () =>
-        mounted.setProps({ foo: `baz` });
+      expect(receivedProps).to.eql({ foo: `bar bob` });
 
-      expect(updateComponent).to.throw(/Duplicate prop has been provided/);
+      // Updated component duplicate prop
+      mounted.setProps({ foo: `baz` });
+
+      expect(mounted.props().foo).to.equal(`baz`);
     });
   });
 });

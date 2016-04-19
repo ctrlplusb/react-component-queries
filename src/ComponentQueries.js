@@ -2,12 +2,15 @@
 import React, { Component, PropTypes } from 'react';
 import invariant from 'invariant';
 import SizeMe from 'react-sizeme';
+import { mergeWith } from 'lodash';
 
 const defaultSizeMeConfig = {
   monitorHeight: false,
   monitorWidth: true,
   refreshRate: 16
 };
+
+const defaultConflictResolver = (x, y) => y;
 
 /**
  * :: Queries -> Component -> Component
@@ -20,11 +23,17 @@ const defaultSizeMeConfig = {
 function ComponentQueries(...params) {
   let queries;
   let sizeMeConfig;
+  let conflictResolver;
 
   if (params.length === 1 && params[0].queries) {
     queries = params[0].queries || [];
     sizeMeConfig = params[0].sizeMeConfig || defaultSizeMeConfig;
+    conflictResolver = params[0].conflictResolver || defaultConflictResolver;
 
+    invariant(
+      typeof conflictResolver === `function`,
+      `The conflict resolver you provide to ComponentQueries should be a function.`
+    );
     invariant(
       Array.isArray(queries),
       `"queries" must be provided as an array when using the complex configuration.`);
@@ -33,6 +42,11 @@ function ComponentQueries(...params) {
   }
 
   sizeMeConfig = sizeMeConfig || defaultSizeMeConfig;
+  conflictResolver = conflictResolver || defaultConflictResolver;
+  const mergeWithCustomizer = (x, y, key) => {
+    if (x === undefined) return undefined;
+    return conflictResolver(x, y, key);
+  };
 
   invariant(
     queries.length > 0,
@@ -72,38 +86,29 @@ function ComponentQueries(...params) {
 
       runQueries({ width, height }) {
         const queryResult = queries.reduce((acc, cur) =>
-          Object.assign(
-            {},
+          mergeWith(
             acc,
-            cur({ width, height: sizeMeConfig.monitorHeight ? height : undefined })
+            cur({
+              width: sizeMeConfig.monitorWidth ? width : null,
+              height: sizeMeConfig.monitorHeight ? height : null
+            }),
+            mergeWithCustomizer
           )
         , {});
 
         this.setState({ queryResult });
       }
 
-      checkForDuplicateProps() {
-        const provided = new Set(Object.keys(this.props));
-
-        Object.keys(this.state.queryResult).forEach(queryProp =>
-          invariant(
-            !provided.has(queryProp),
-            `Duplicate prop has been provided to Component with ComponentQueries: ${queryProp}`)
-        );
-      }
-
       render() {
-        // We need this guard to execute here in order to guarantee we have
-        // both the updated state and the passed in props.
-        this.checkForDuplicateProps();
-
         const { size, ...otherProps } = this.props; // eslint-disable-line no-unused-vars
 
+        const allProps = mergeWith(
+          this.state.queryResult,
+          otherProps,
+          mergeWithCustomizer);
+
         return (
-          <WrappedComponent
-            {...this.state.queryResult}
-            {...otherProps}
-          />
+          <WrappedComponent {...allProps} />
         );
       }
     }
