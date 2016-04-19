@@ -1,5 +1,5 @@
 <p align='center'>
-  <h1 align='center'>COMPONENT QUERIES</h1>
+  <img src='https://raw.githubusercontent.com/ctrlplusb/react-component-queries/master/assets/logo.png' />
   <p align='center'>Provide props to your React Components based on their Width and/or Height.</p>
 </p>
 
