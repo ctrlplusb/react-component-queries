@@ -15,6 +15,31 @@
 * Supports any Component type, i.e. stateless/class.
 * Works with React 0.14.x and 15.x.x.
 
+## Overview
+
+`react-component-queries` allows you to define queries against the width and/or height of your Component in order to produce custom props to be passed into your Component. Any time the size of your Component changes the queries will automatically be run again.
+
+The queries themselves are super simple functions that accept `width` and/or `height` as parameters. You can implement any logic you like within these query functions but they must return an object holding the props you would like to assign to your Component (or an empty object if none).
+
+For example:
+
+```javascript
+var query = function(size) {
+  if (size.width === size.height) {
+    return { isSquare: true }; // "isSquare" prop set with value of "true".
+  }
+  
+  return {}; // No props provided!
+}
+```
+
+If you are using ES6 then you can use object destructuring and anonymous function syntax to write a much more concise implementation:
+
+```javascript
+const query = ({ width, height }) => 
+  width === height ? { isSquare: true } : {};
+``` 
+
 ## Install
 
 There is a peer-dependency on `react-sizeme`, so run the following command to install both libraries:
@@ -27,40 +52,6 @@ npm install react-sizeme react-component-queries --save
 
 Yep, it works:<br />
 https://react-component-queries-demo-kroznlrebm.now.sh
-
-## Overview
-
-This is a higher order component library that wraps up [`react-sizeme`](https://github.com/ctrlplusb/react-sizeme) to provide you with the capability to decorate your components with props based on queries against their width and/or height.
-
-`react-sizeme` gives us the capability to know the width/height of your component.  `react-component-queries` allows you to define queries (as little or as many as you like) to operate on the known size of your component.  The queries return props that will be assigned to your components.  Any time the size of your component changes the queries will be run again.
-
-The queries themselves are simply functions that accept named parameters of `width` and `height`. They must return an object that contains any props you wish to assign to your components.
-
-For example:
-
-```javascript
-var query = function(size) {
-  if (size.width === size.height) {
-    return { isSquare: true };
-  }
-  
-  return { isSquare: false};
-}
-```
-
-If you are using ES6 then you can use object destructuring and anonymous function syntax to write a much more concise implementation:
-
-```javascript
-const query = ({ width, height }) => 
-  width === height ? { isSquare: true } : { isSquare: false };
-``` 
-
-If you don't want a query to assign any props to your component for a specific case then simply return an empty object:
-
-```javascript
-const query = ({ width, height }) =>
-  width === height ? { isSquare: true } : {};
-```
 
 ## Examples 
 
@@ -127,3 +118,75 @@ export default ComponentQueries({
 ```
 
 As you can see we expose a `sizeMeConfig`, please see the [`react-sizeme`](https://github.com/ctrlplusb/react-sizeme) for the full list of options that you can provide.
+
+## Prop Conflict Handling
+
+As it is possible for you to provide props from multiple queries there could be cases where prop clashing occurs.  By default we have an order of preference for which prop value should be resolved in the case of conflicts.  
+
+__The rule is:__ Custom passed in props take preference followed by the last item in the query collection.
+
+Let's illustrate this given the following component:
+
+```
+const MyComponent = ComponentQueries(
+  ({ width }) => { return { foo: 'bar' }; },
+  ({ width }) => { return { foo: 'bob' }; }
+)(ComponentToWrap);
+```
+
+If we rendered this component the value we would received for `foo` would be "bob".
+
+Then say we rendered our component like so, passing in a custom prop:
+
+```
+ReactDOM.render(<MyComponent foo="zip" />, container);
+``` 
+
+In this case the value of `foo` would resolve to "zip".
+
+It's important to remember this.
+
+## Custom Prop Conflict Resolution
+
+There may be cases when you want to provide custom rules for how conflicts are resolved.  For example, say you wanted your queries to produce `className` props, but desired that any conflicts simply resolved in the conflicts being concatenated. This can be especially helpful in the case where you want users to be able to pass in custom `className` props into your component.
+
+To support this case we provide an extended configuration item called `conflictResolver`, which is specifically a function of the following structure:
+
+```javascript
+function (currentPropValue, nextPropValue, propName) 
+```
+
+To solve our above described case we could provide the following implementation of the `conflictResolver`:
+
+```javascript
+const MyComponent = ComponentQueries({
+  queries: [
+    ({ width }) => { return { className: 'foo', poop: 'splash' }; },
+    ({ width }) => { return { className: 'bar', poop: 'plop' }; }
+  ],
+  conflictResolver: (current, next, key) => {
+    // If the prop is "className" we will concat the new value to
+    // the current value.
+    if (key === 'className) {
+      return current.concat(' ', next);
+    }
+    // Otherwise we return the new value, overriding the old value. 
+    return next;
+  }
+})(ComponentToWrap);
+```
+
+If we rendered our component like so:
+
+```javascript
+ReactDOM.render(<MyComponent className="baz" />, container);
+```
+
+Then the props that would be resolved would be:
+
+```javascript
+{
+  className: 'foo bar baz',
+  poop: 'plop'
+}
+```
