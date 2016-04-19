@@ -167,7 +167,7 @@ const MyComponent = ComponentQueries({
   conflictResolver: (current, next, key) => {
     // If the prop is "className" we will concat the new value to
     // the current value.
-    if (key === 'className) {
+    if (key === 'className') {
       return current.concat(' ', next);
     }
     // Otherwise we return the new value, overriding the old value. 
