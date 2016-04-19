@@ -3,6 +3,12 @@ import React, { Component, PropTypes } from 'react';
 import invariant from 'invariant';
 import SizeMe from 'react-sizeme';
 
+const defaultSizeMeConfig = {
+  monitorHeight: false,
+  monitorWidth: true,
+  refreshRate: 16
+};
+
 /**
  * :: Queries -> Component -> Component
  *
@@ -11,7 +17,23 @@ import SizeMe from 'react-sizeme';
  * operates on the Component's width/height rather than the entire viewport
  * width/height.
  */
-function ComponentQueries(...queries) {
+function ComponentQueries(...params) {
+  let queries;
+  let sizeMeConfig;
+
+  if (params.length === 1 && params[0].queries) {
+    queries = params[0].queries || [];
+    sizeMeConfig = params[0].sizeMeConfig || defaultSizeMeConfig;
+
+    invariant(
+      Array.isArray(queries),
+      `"queries" must be provided as an array when using the complex configuration.`);
+  } else {
+    queries = params;
+  }
+
+  sizeMeConfig = sizeMeConfig || defaultSizeMeConfig;
+
   invariant(
     queries.length > 0,
     `You must provide at least one query to ComponentQueries.`);
@@ -50,7 +72,11 @@ function ComponentQueries(...queries) {
 
       runQueries({ width, height }) {
         const queryResult = queries.reduce((acc, cur) =>
-          Object.assign({}, acc, cur({ width, height }))
+          Object.assign(
+            {},
+            acc,
+            cur({ width, height: sizeMeConfig.monitorHeight ? height : undefined })
+          )
         , {});
 
         this.setState({ queryResult });
@@ -89,10 +115,7 @@ function ComponentQueries(...queries) {
       }).isRequired
     };
 
-    return SizeMe({
-      monitorWidth: true,
-      monitorHeight: false
-    })(ComponentWithComponentQueries);
+    return SizeMe(sizeMeConfig)(ComponentWithComponentQueries);
   };
 }
 
