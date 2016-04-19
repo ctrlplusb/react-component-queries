@@ -61,7 +61,7 @@
     "react": "15.0.1",
     "react-addons-test-utils": "15.0.1",
     "react-dom": "15.0.1",
-    "react-sizeme": "1.0.6",
+    "react-sizeme": "2.0.0",
     "semantic-release": "^6.2.1",
     "stats-webpack-plugin": "0.3.1",
     "webpack": "1.13.0",
@@ -71,7 +71,7 @@
   "peerDependencies": {
     "react": "^0.14.0 || ^15.0.0",
     "react-dom": "^0.14.0 || ^15.0.0",
-    "react-sizeme": "^1.0.0"
+    "react-sizeme": "^2.0.0"
   },
   "czConfig": {
     "path": "node_modules/cz-conventional-changelog"
