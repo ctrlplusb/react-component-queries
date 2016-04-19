@@ -71,9 +71,7 @@ class MyComponent extends Component {
     return (
       <div>
         {/* We recieve the following props from our queries */}
-        I am at {this.props.scale} scale.<br />
-        I am {this.props.short ? 'short' : 'long'}<br />
-        I am {this.props.square ? 'square' : 'rectangular'}
+        I am at {this.props.scale} scale.
       </div>
     );
   }
@@ -83,11 +81,7 @@ export default ComponentQueries(
   // Provide as many query functions as you need.
   ({ width }) => width <= 330 ? { scale: 'mobile' } : {},
   ({ width }) => width > 330 && width <=960 ? { scale: 'tablet' } : {},
-  ({ width }) => width > 960 ? { scale: 'desktop' } : {},
-  // Pass in height too
-  ({ height }) => height > 200 ? { short: false } : { short: true },
-  // Or both
-  ({ width, height }) => width === height ? { square: true } : { square: false },
+  ({ width }) => width > 960 ? { scale: 'desktop' } : {}
 )(MyComponent);
 ```
 
