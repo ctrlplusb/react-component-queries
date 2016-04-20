@@ -128,8 +128,8 @@ function ComponentQueries(...params) {
 
     ComponentWithComponentQueries.propTypes = {
       size: PropTypes.shape({
-        width: PropTypes.number.isRequired,
-        height: PropTypes.number.isRequired
+        width: PropTypes.number,
+        height: PropTypes.number
       }).isRequired
     };
 
