@@ -79,15 +79,13 @@ function ComponentQueries(...params) {
         this.runQueries(this.props.size);
       }
 
-      shouldComponentUpdate(nextProps) {
+      componentWillReceiveProps(nextProps) {
         const { size: currentSize } = this.props;
         const { size: nextSize } = nextProps;
 
         if (this.hasSizeChanged(currentSize, nextSize)) {
           this.runQueries(nextSize);
         }
-
-        return true;
       }
 
       hasSizeChanged(current, next) {

@@ -73,10 +73,10 @@
     "react-dom": "^0.14.0 || ^15.0.0",
     "react-sizeme": "^2.0.0"
   },
-  "czConfig": {
-    "path": "node_modules/cz-conventional-changelog"
-  },
   "config": {
+    "commitizen" : {
+      "path": "node_modules/cz-conventional-changelog"
+    },
     "ghooks": {
       "pre-commit": "npm run test"
     }
