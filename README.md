@@ -18,28 +18,42 @@
 
 ## Overview
 
-`react-component-queries` allows you to define queries against the width and/or height of your Component in order to produce custom props to be passed into your Component. Any time the size of your Component changes the queries will automatically be run again.
+`react-component-queries` allows you to define queries against the dimensions of your Component in order to produce custom props for your Component. 
 
-The queries themselves are super simple functions that accept `width` and/or `height` as parameters. You can implement any logic you like within these query functions but they must return an object holding the props you would like to assign to your Component (or an empty object if none).
+Any time the dimensions of your rendered Component changes the queries will automatically be run again.
+
+The _queries_ themselves are super simple functions that accept a `size` argument. You can implement any logic you like within the _query_ functions but they must return an object containing the props you would like to assign to your Component.
 
 For example:
 
 ```javascript
-var query = function(size) {
-  if (size.width === size.height) {
-    return { isSquare: true }; // "isSquare" prop set with value of "true".
-  }
-  
-  return {}; // No props provided!
+function isSquareQuery(size) {
+  return {
+    isSquare: size.width === size.height
+  };
 }
 ```
 
-If you are using ES6 then you can use object destructuring and anonymous function syntax to write a much more concise implementation:
+It's great to be able to define your _queries_ as functions as this gives you an opportunity to create and share _queries_ across your components.
+
+Once you have configured your _queries_ then pass them to `ComponentQueries` and wrap your component, like so:
 
 ```javascript
-const query = ({ width, height }) => 
-  width === height ? { isSquare: true } : {};
-``` 
+ComponentQueries(query1, query2)(MyComponent)
+```
+
+You can provide as many queries as you like, their results will be merged and passed to your component.
+
+Of course you can provide your queries inline too.  Below we are using the ES2015 destructuring and anonymous function syntax to provide a much more concise implementation:
+
+```javascript
+ComponentQueries(
+  ({ width }) => width <= 330 ? { scale: 'mobile' } : {},
+  ({ width }) => width > 330 && width <=960 ? { scale: 'tablet' } : {},
+  ({ width }) => width > 960 ? { scale: 'desktop' } : {}
+)(MyComponent);
+```
+
 
 ## Install
 
