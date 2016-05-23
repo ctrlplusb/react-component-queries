@@ -1,13 +1,15 @@
 <p align='center'>
-  <img src='https://raw.githubusercontent.com/ctrlplusb/react-component-queries/master/assets/logo.png' />
+  <img width='250' src='https://raw.githubusercontent.com/ctrlplusb/react-component-queries/master/assets/logo.png' />
   <p align='center'>Provide props to your React Components based on their Width and/or Height.</p>
 </p>
 
+<p align='center'>
 [![Travis](https://img.shields.io/travis/ctrlplusb/react-component-queries.svg?style=flat-square)](https://travis-ci.org/ctrlplusb/react-component-queries)
 [![npm](https://img.shields.io/npm/v/react-component-queries.svg?style=flat-square)](http://npm.im/react-component-queries)
 [![MIT License](https://img.shields.io/npm/l/react-component-queries.svg?style=flat-square)](http://opensource.org/licenses/MIT)
 [![Codecov](https://img.shields.io/codecov/c/github/ctrlplusb/react-component-queries.svg?style=flat-square)](https://codecov.io/github/ctrlplusb/react-component-queries)
 [![Maintenance](https://img.shields.io/maintenance/yes/2016.svg?style=flat-square)]()
+
 
 * Responsive Components!
 * Easy to use.
