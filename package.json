@@ -63,7 +63,7 @@
     "react": "15.2.1",
     "react-addons-test-utils": "15.2.1",
     "react-dom": "15.2.1",
-    "react-sizeme": "2.1.1",
+    "react-sizeme": "2.1.2",
     "semantic-release": "6.2.2",
     "stats-webpack-plugin": "0.4.0",
     "webpack": "1.13.1",
