@@ -1,3 +1,5 @@
+/* eslint-disable import/no-extraneous-dependencies */
+
 import webpack from 'webpack';
 import path from 'path';
 import WebpackStatsPlugin from 'stats-webpack-plugin';
@@ -78,7 +80,7 @@ if (env === `production`) {
   );
 
   config.plugins.push(
-    new LodashModuleReplacementPlugin
+    new LodashModuleReplacementPlugin()
   );
 }
 
