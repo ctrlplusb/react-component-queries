@@ -32,7 +32,7 @@
   "homepage": "https://github.com/ctrlplusb/react-component-queries#readme",
   "devDependencies": {
     "babel-cli": "6.11.4",
-    "babel-core": "6.13.2",
+    "babel-core": "6.14.0",
     "babel-eslint": "6.1.2",
     "babel-loader": "6.2.5",
     "babel-plugin-rewire": "1.0.0-rc-2",
