@@ -8,7 +8,7 @@ describeWithDOM(`Given the ComponentQueries library`, () => {
   let sizeMeConfig;
 
   beforeEach(() => {
-    ComponentQueries = require(`../src/index.js`).default;
+    ComponentQueries = require(`../src/ComponentQueries.js`).default;
 
     // Set up our mocks.
     const ComponentQueriesRewireAPI = ComponentQueries.__RewireAPI__;
@@ -85,7 +85,7 @@ describeWithDOM(`Given the ComponentQueries library`, () => {
             monitorWidth: false,
             refreshRate: 200
           }
-        })(() => <div></div>);
+        })(() => <div />);
 
         expect(sizeMeConfig).to.eql({
           monitorHeight: true,
@@ -134,7 +134,7 @@ describeWithDOM(`Given the ComponentQueries library`, () => {
 
       const ComponentQueriedComponent = ComponentQueries(
         ({ height }) => { actualHeight = height; return {}; }
-      )(() => <div></div>);
+      )(() => <div />);
 
       // Initial render
       mount(<ComponentQueriedComponent size={{ width: 100, height: 100 }} />);
@@ -147,7 +147,7 @@ describeWithDOM(`Given the ComponentQueries library`, () => {
       const ComponentQueriedComponent = ComponentQueries(
         ({ width }) => width <= 100 ? { foo: `bar` } : {},
         ({ width }) => width <= 100 ? { foo: `baz` } : {},
-      )((props) => { receivedProps = props; return <div></div>; });
+      )((props) => { receivedProps = props; return <div />; });
 
       // Initial render with duplicate query result.
       const mounted = mount(
@@ -170,7 +170,7 @@ describeWithDOM(`Given the ComponentQueries library`, () => {
         ],
         conflictResolver: (x, y, key) =>
           key === `foo` ? x.concat(` `, y) : y
-      })((props) => { receivedProps = props; return <div></div>; });
+      })((props) => { receivedProps = props; return <div />; });
 
       // Initial render duplicate prop
       const mounted = mount(
