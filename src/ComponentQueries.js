@@ -1,25 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 import invariant from 'invariant';
 import sizeMe from 'react-sizeme';
+import mergeWith from './utils/mergeWith';
 
 const defaultSizeMeConfig = {
   monitorHeight: false,
   monitorWidth: true,
   refreshRate: 16,
-};
-
-const mergeWith = (x, y, fn) => {
-  const result = Object.assign({}, x);
-
-  Object.keys(y).forEach(key => {
-    if (x[key] && y[key]) {
-      result[key] = fn(x[key], y[key], key);
-    } else if (y[key]) {
-      result[key] = y[key];
-    }
-  });
-
-  return result;
 };
 
 const defaultConflictResolver = (x, y) => y;
