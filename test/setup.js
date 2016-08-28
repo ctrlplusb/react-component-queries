@@ -1,4 +1,4 @@
-const createDom = require(`./jsdom`).createDom;
+const createDom = require('./jsdom').createDom;
 
 /**
  * Fix react dom configuration.

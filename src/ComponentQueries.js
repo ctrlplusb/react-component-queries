@@ -1,4 +1,3 @@
-// Libraries and Utils.
 import React, { Component, PropTypes } from 'react';
 import invariant from 'invariant';
 import sizeMe from 'react-sizeme';
@@ -6,7 +5,7 @@ import sizeMe from 'react-sizeme';
 const defaultSizeMeConfig = {
   monitorHeight: false,
   monitorWidth: true,
-  refreshRate: 16
+  refreshRate: 16,
 };
 
 const mergeWith = (x, y, fn) => {
@@ -44,12 +43,12 @@ function componentQueries(...params) {
     conflictResolver = params[0].conflictResolver || defaultConflictResolver;
 
     invariant(
-      typeof conflictResolver === `function`,
-      `The conflict resolver you provide to ComponentQueries should be a function.`
+      typeof conflictResolver === 'function',
+      'The conflict resolver you provide to ComponentQueries should be a function.'
     );
     invariant(
       Array.isArray(queries),
-      `"queries" must be provided as an array when using the complex configuration.`);
+      '"queries" must be provided as an array when using the complex configuration.');
   } else {
     queries = params;
   }
@@ -63,16 +62,16 @@ function componentQueries(...params) {
 
   invariant(
     queries.length > 0,
-    `You must provide at least one query to ComponentQueries.`);
+    'You must provide at least one query to ComponentQueries.');
   invariant(
-    queries.filter(q => typeof q !== `function`).length === 0,
-    `All provided queries for ComponentQueries should be functions.`
+    queries.filter(q => typeof q !== 'function').length === 0,
+    'All provided queries for ComponentQueries should be functions.'
   );
 
   return function WrapComponent(WrappedComponent) {
     class ComponentWithComponentQueries extends Component {
       state = {
-        queryResult: {}
+        queryResult: {},
       }
 
       componentWillMount() {
@@ -101,7 +100,7 @@ function componentQueries(...params) {
             acc,
             cur({
               width: sizeMeConfig.monitorWidth ? width : null,
-              height: sizeMeConfig.monitorHeight ? height : null
+              height: sizeMeConfig.monitorHeight ? height : null,
             }),
             mergeWithCustomizer
           )
@@ -127,8 +126,8 @@ function componentQueries(...params) {
     ComponentWithComponentQueries.propTypes = {
       size: PropTypes.shape({
         width: PropTypes.number,
-        height: PropTypes.number
-      }).isRequired
+        height: PropTypes.number,
+      }).isRequired,
     };
 
     return sizeMe(sizeMeConfig)(ComponentWithComponentQueries);

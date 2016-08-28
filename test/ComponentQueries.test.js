@@ -1,27 +1,32 @@
+/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable global-require */
+/* eslint-disable no-underscore-dangle */
+
 import React from 'react';
 import { expect } from 'chai';
-import { describeWithDOM } from './jsdom';
 import { mount } from 'enzyme';
+import { describeWithDOM } from './jsdom';
 
-describeWithDOM(`Given the ComponentQueries library`, () => {
+
+describeWithDOM('Given the ComponentQueries library', () => {
   let componentQueries;
   let sizeMeConfig;
 
   beforeEach(() => {
-    componentQueries = require(`../src/componentQueries.js`).default;
+    componentQueries = require('../src/componentQueries').default;
 
     // Set up our mocks.
     const componentQueriesRewireAPI = componentQueries.__RewireAPI__;
 
     // Mock the SizeMe HOC to just return our ComponentQueries instance.
-    componentQueriesRewireAPI.__Rewire__(`sizeMe`, config => {
+    componentQueriesRewireAPI.__Rewire__('sizeMe', config => {
       sizeMeConfig = config; return x => x;
     });
   });
 
-  describe(`When setting up the ComponentQueries HOC`, () => {
-    describe(`And no queries are provided`, () => {
-      it(`Then an error should be thrown`, () => {
+  describe('When setting up the ComponentQueries HOC', () => {
+    describe('And no queries are provided', () => {
+      it('Then an error should be thrown', () => {
         const simpleConfig = () => {
           componentQueries();
         };
@@ -30,7 +35,7 @@ describeWithDOM(`Given the ComponentQueries library`, () => {
 
         const complexConfig = () => {
           componentQueries({
-            queries: []
+            queries: [],
           });
         };
         expect(complexConfig)
@@ -38,7 +43,7 @@ describeWithDOM(`Given the ComponentQueries library`, () => {
 
         const complexConfig2 = () => {
           componentQueries({
-            queries: `foo`
+            queries: 'foo',
           });
         };
         expect(complexConfig2)
@@ -46,17 +51,17 @@ describeWithDOM(`Given the ComponentQueries library`, () => {
       });
     });
 
-    describe(`And an invalid query type is provided`, () => {
-      it(`Then an error should be thrown`, () => {
+    describe('And an invalid query type is provided', () => {
+      it('Then an error should be thrown', () => {
         const simpleConfig = () => {
-          componentQueries(`wrong!`);
+          componentQueries('wrong!');
         };
         expect(simpleConfig)
           .to.throw(/queries for ComponentQueries should be functions/);
 
         const complexConfig = () => {
           componentQueries({
-            queries: [`foo`]
+            queries: ['foo'],
           });
         };
         expect(complexConfig)
@@ -64,72 +69,72 @@ describeWithDOM(`Given the ComponentQueries library`, () => {
       });
     });
 
-    describe(`And no sizeMeConfig configuration is provided`, () => {
-      it(`Then the default config should be given to SizeMe`, () => {
-        componentQueries(() => ({}))(() => <div></div>);
+    describe('And no sizeMeConfig configuration is provided', () => {
+      it('Then the default config should be given to SizeMe', () => {
+        componentQueries(() => ({}))(() => <div />);
 
         expect(sizeMeConfig).to.eql({
           monitorHeight: false,
           monitorWidth: true,
-          refreshRate: 16
+          refreshRate: 16,
         });
       });
     });
 
-    describe(`And a custom sizeMeConfig configuration is provided`, () => {
-      it(`Then the custom config should be given to SizeMe`, () => {
+    describe('And a custom sizeMeConfig configuration is provided', () => {
+      it('Then the custom config should be given to SizeMe', () => {
         componentQueries({
           queries: [() => ({})],
           sizeMeConfig: {
             monitorHeight: true,
             monitorWidth: false,
-            refreshRate: 200
-          }
+            refreshRate: 200,
+          },
         })(() => <div />);
 
         expect(sizeMeConfig).to.eql({
           monitorHeight: true,
           monitorWidth: false,
-          refreshRate: 200
+          refreshRate: 200,
         });
       });
     });
   });
 
-  describe(`When rendering a component queries component`, () => {
-    it(`Then it should receive the appropriate props based on it's queries`, () => {
+  describe('When rendering a component queries component', () => {
+    it('Then it should receive the appropriate props based on it\'s queries', () => {
       let receivedProps;
 
       const ComponentQueriedComponent = componentQueries({
         queries: [
-          ({ width }) => width <= 100 ? { foo: `bar` } : {},
-          ({ width }) => width > 100 ? { bob: `baz` } : {},
-          ({ height }) => height <= 100 ? { zip: `zap` } : {}
+          ({ width }) => (width <= 100 ? { foo: 'bar' } : {}),
+          ({ width }) => (width > 100 ? { bob: 'baz' } : {}),
+          ({ height }) => (height <= 100 ? { zip: 'zap' } : {}),
         ],
         sizeMeConfig: {
           monitorWidth: true,
-          monitorHeight: true
-        }
-      })((props) => { receivedProps = props; return <div></div>; });
+          monitorHeight: true,
+        },
+      })((props) => { receivedProps = props; return <div />; });
 
       // Initial render
       const mounted = mount(<ComponentQueriedComponent size={{ width: 100, height: 100 }} />);
-      expect(receivedProps).to.eql({ foo: `bar`, zip: `zap` });
+      expect(receivedProps).to.eql({ foo: 'bar', zip: 'zap' });
 
       // Update size, but no size change
       mounted.setProps({ size: { width: 100, height: 100 } });
-      expect(receivedProps).to.eql({ foo: `bar`, zip: `zap` });
+      expect(receivedProps).to.eql({ foo: 'bar', zip: 'zap' });
 
       // Update size, with change.
       mounted.setProps({ size: { width: 101, height: 99 } });
-      expect(receivedProps).to.eql({ bob: `baz`, zip: `zap` });
+      expect(receivedProps).to.eql({ bob: 'baz', zip: 'zap' });
 
       // Update size, with change.
       mounted.setProps({ size: { width: 101, height: 101 } });
-      expect(receivedProps).to.eql({ bob: `baz` });
+      expect(receivedProps).to.eql({ bob: 'baz' });
     });
 
-    it(`Then height should be undefined if we are not monitoring height`, () => {
+    it('Then height should be undefined if we are not monitoring height', () => {
       let actualHeight;
 
       const ComponentQueriedComponent = componentQueries(
@@ -141,35 +146,35 @@ describeWithDOM(`Given the ComponentQueries library`, () => {
       expect(actualHeight).to.equal(null);
     });
 
-    it(`Then duplicate props should be overridden when using the default conflict resolver`, () => {
+    it('Then duplicate props should be overridden when using the default conflict resolver', () => {
       let receivedProps;
 
       const ComponentQueriedComponent = componentQueries(
-        ({ width }) => width <= 100 ? { foo: `bar` } : {},
-        ({ width }) => width <= 100 ? { foo: `baz` } : {},
+        ({ width }) => (width <= 100 ? { foo: 'bar' } : {}),
+        ({ width }) => (width <= 100 ? { foo: 'baz' } : {}),
       )((props) => { receivedProps = props; return <div />; });
 
       // Initial render with duplicate query result.
       const mounted = mount(
         <ComponentQueriedComponent size={{ width: 100, height: 100 }} />
       );
-      expect(receivedProps).to.eql({ foo: `baz` });
+      expect(receivedProps).to.eql({ foo: 'baz' });
 
       // Set a custom prop that conflicts with the query result.
-      mounted.setProps({ foo: `bob` });
-      expect(receivedProps).to.eql({ foo: `bob` });
+      mounted.setProps({ foo: 'bob' });
+      expect(receivedProps).to.eql({ foo: 'bob' });
     });
 
-    it(`Then a custom conflict resolver should behave as expected`, () => {
+    it('Then a custom conflict resolver should behave as expected', () => {
       let receivedProps;
 
       const ComponentQueriedComponent = componentQueries({
         queries: [
-          ({ width }) => width <= 100 ? { foo: `bar` } : {},
-          ({ width }) => width <= 100 ? { foo: `bob` } : {}
+          ({ width }) => (width <= 100 ? { foo: 'bar' } : {}),
+          ({ width }) => (width <= 100 ? { foo: 'bob' } : {}),
         ],
         conflictResolver: (x, y, key) =>
-          key === `foo` ? x.concat(` `, y) : y
+          (key === 'foo' ? x.concat(' ', y) : y),
       })((props) => { receivedProps = props; return <div />; });
 
       // Initial render duplicate prop
@@ -177,12 +182,12 @@ describeWithDOM(`Given the ComponentQueries library`, () => {
         <ComponentQueriedComponent size={{ width: 100, height: 100 }} />
       );
 
-      expect(receivedProps).to.eql({ foo: `bar bob` });
+      expect(receivedProps).to.eql({ foo: 'bar bob' });
 
       // Updated component duplicate prop
-      mounted.setProps({ foo: `baz` });
+      mounted.setProps({ foo: 'baz' });
 
-      expect(mounted.props().foo).to.equal(`baz`);
+      expect(mounted.props().foo).to.equal('baz');
     });
   });
 });
