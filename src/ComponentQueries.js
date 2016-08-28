@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import invariant from 'invariant';
 import sizeMe from 'react-sizeme';
 import mergeWith from './utils/mergeWith';
+import getDisplayName from './utils/getDisplayName';
 
 const defaultSizeMeConfig = {
   monitorHeight: false,
@@ -57,6 +58,15 @@ function componentQueries(...params) {
 
   return function WrapComponent(WrappedComponent) {
     class ComponentWithComponentQueries extends Component {
+      static displayName = `ComponentQueries(${getDisplayName(WrappedComponent)})`;
+
+      static propTypes = {
+        size: PropTypes.shape({
+          width: PropTypes.number,
+          height: PropTypes.number,
+        }).isRequired,
+      };
+
       state = {
         queryResult: {},
       }
@@ -97,25 +107,22 @@ function componentQueries(...params) {
       }
 
       render() {
-        const { size, ...otherProps } = this.props; // eslint-disable-line no-unused-vars
+        const {
+          size, // eslint-disable-line no-unused-vars
+          ...otherProps,
+        } = this.props;
 
         const allProps = mergeWith(
           this.state.queryResult,
           otherProps,
-          mergeWithCustomizer);
+          mergeWithCustomizer
+        );
 
         return (
           <WrappedComponent {...allProps} />
         );
       }
     }
-
-    ComponentWithComponentQueries.propTypes = {
-      size: PropTypes.shape({
-        width: PropTypes.number,
-        height: PropTypes.number,
-      }).isRequired,
-    };
 
     return sizeMe(sizeMeConfig)(ComponentWithComponentQueries);
   };
