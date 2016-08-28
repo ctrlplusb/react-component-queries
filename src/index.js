@@ -1,3 +1,3 @@
-import ComponentQueries from './ComponentQueries';
+import componentQueries from './componentQueries';
 
-export default ComponentQueries;
+export default componentQueries;

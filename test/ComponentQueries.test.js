@@ -4,17 +4,17 @@ import { describeWithDOM } from './jsdom';
 import { mount } from 'enzyme';
 
 describeWithDOM(`Given the ComponentQueries library`, () => {
-  let ComponentQueries;
+  let componentQueries;
   let sizeMeConfig;
 
   beforeEach(() => {
-    ComponentQueries = require(`../src/ComponentQueries.js`).default;
+    componentQueries = require(`../src/componentQueries.js`).default;
 
     // Set up our mocks.
-    const ComponentQueriesRewireAPI = ComponentQueries.__RewireAPI__;
+    const componentQueriesRewireAPI = componentQueries.__RewireAPI__;
 
     // Mock the SizeMe HOC to just return our ComponentQueries instance.
-    ComponentQueriesRewireAPI.__Rewire__(`SizeMe`, config => {
+    componentQueriesRewireAPI.__Rewire__(`sizeMe`, config => {
       sizeMeConfig = config; return x => x;
     });
   });
@@ -23,13 +23,13 @@ describeWithDOM(`Given the ComponentQueries library`, () => {
     describe(`And no queries are provided`, () => {
       it(`Then an error should be thrown`, () => {
         const simpleConfig = () => {
-          ComponentQueries();
+          componentQueries();
         };
         expect(simpleConfig)
           .to.throw(/provide at least one query to ComponentQueries/);
 
         const complexConfig = () => {
-          ComponentQueries({
+          componentQueries({
             queries: []
           });
         };
@@ -37,7 +37,7 @@ describeWithDOM(`Given the ComponentQueries library`, () => {
           .to.throw(/provide at least one query to ComponentQueries/);
 
         const complexConfig2 = () => {
-          ComponentQueries({
+          componentQueries({
             queries: `foo`
           });
         };
@@ -49,13 +49,13 @@ describeWithDOM(`Given the ComponentQueries library`, () => {
     describe(`And an invalid query type is provided`, () => {
       it(`Then an error should be thrown`, () => {
         const simpleConfig = () => {
-          ComponentQueries(`wrong!`);
+          componentQueries(`wrong!`);
         };
         expect(simpleConfig)
           .to.throw(/queries for ComponentQueries should be functions/);
 
         const complexConfig = () => {
-          ComponentQueries({
+          componentQueries({
             queries: [`foo`]
           });
         };
@@ -66,7 +66,7 @@ describeWithDOM(`Given the ComponentQueries library`, () => {
 
     describe(`And no sizeMeConfig configuration is provided`, () => {
       it(`Then the default config should be given to SizeMe`, () => {
-        ComponentQueries(() => ({}))(() => <div></div>);
+        componentQueries(() => ({}))(() => <div></div>);
 
         expect(sizeMeConfig).to.eql({
           monitorHeight: false,
@@ -78,7 +78,7 @@ describeWithDOM(`Given the ComponentQueries library`, () => {
 
     describe(`And a custom sizeMeConfig configuration is provided`, () => {
       it(`Then the custom config should be given to SizeMe`, () => {
-        ComponentQueries({
+        componentQueries({
           queries: [() => ({})],
           sizeMeConfig: {
             monitorHeight: true,
@@ -100,7 +100,7 @@ describeWithDOM(`Given the ComponentQueries library`, () => {
     it(`Then it should receive the appropriate props based on it's queries`, () => {
       let receivedProps;
 
-      const ComponentQueriedComponent = ComponentQueries({
+      const ComponentQueriedComponent = componentQueries({
         queries: [
           ({ width }) => width <= 100 ? { foo: `bar` } : {},
           ({ width }) => width > 100 ? { bob: `baz` } : {},
@@ -132,7 +132,7 @@ describeWithDOM(`Given the ComponentQueries library`, () => {
     it(`Then height should be undefined if we are not monitoring height`, () => {
       let actualHeight;
 
-      const ComponentQueriedComponent = ComponentQueries(
+      const ComponentQueriedComponent = componentQueries(
         ({ height }) => { actualHeight = height; return {}; }
       )(() => <div />);
 
@@ -144,7 +144,7 @@ describeWithDOM(`Given the ComponentQueries library`, () => {
     it(`Then duplicate props should be overridden when using the default conflict resolver`, () => {
       let receivedProps;
 
-      const ComponentQueriedComponent = ComponentQueries(
+      const ComponentQueriedComponent = componentQueries(
         ({ width }) => width <= 100 ? { foo: `bar` } : {},
         ({ width }) => width <= 100 ? { foo: `baz` } : {},
       )((props) => { receivedProps = props; return <div />; });
@@ -163,7 +163,7 @@ describeWithDOM(`Given the ComponentQueries library`, () => {
     it(`Then a custom conflict resolver should behave as expected`, () => {
       let receivedProps;
 
-      const ComponentQueriedComponent = ComponentQueries({
+      const ComponentQueriedComponent = componentQueries({
         queries: [
           ({ width }) => width <= 100 ? { foo: `bar` } : {},
           ({ width }) => width <= 100 ? { foo: `bob` } : {}

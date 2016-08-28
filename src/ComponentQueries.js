@@ -1,7 +1,7 @@
 // Libraries and Utils.
 import React, { Component, PropTypes } from 'react';
 import invariant from 'invariant';
-import SizeMe from 'react-sizeme';
+import sizeMe from 'react-sizeme';
 
 const defaultSizeMeConfig = {
   monitorHeight: false,
@@ -33,7 +33,7 @@ const defaultConflictResolver = (x, y) => y;
  * operates on the Component's width/height rather than the entire viewport
  * width/height.
  */
-function ComponentQueries(...params) {
+function componentQueries(...params) {
   let queries;
   let sizeMeConfig;
   let conflictResolver;
@@ -131,8 +131,8 @@ function ComponentQueries(...params) {
       }).isRequired
     };
 
-    return SizeMe(sizeMeConfig)(ComponentWithComponentQueries);
+    return sizeMe(sizeMeConfig)(ComponentWithComponentQueries);
   };
 }
 
-export default ComponentQueries;
+export default componentQueries;
