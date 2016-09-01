@@ -100,15 +100,16 @@ function componentQueries(...params) {
       }
 
       componentWillMount() {
-        this.runQueries(this.props.size);
+        const { size, ...otherProps } = this.props;
+        this.runQueries(size, otherProps);
       }
 
       componentWillReceiveProps(nextProps) {
         const { size } = this.props;
-        const { size: nextSize } = nextProps;
+        const { size: nextSize, ...nextOtherProps } = nextProps;
 
         if (!shallowEqual(size, nextSize)) {
-          this.runQueries(nextSize);
+          this.runQueries(nextSize, nextOtherProps);
         }
       }
 
@@ -127,14 +128,17 @@ function componentQueries(...params) {
           || !shallowEqual(this.state.queryResult, nextState.queryResult);
       }
 
-      runQueries({ width, height }) {
+      runQueries({ width, height }, otherProps) {
         const queryResult = queries.reduce((acc, cur) =>
           mergeWith(
             acc,
-            cur({
-              width: sizeMeConfig.monitorWidth ? width : null,
-              height: sizeMeConfig.monitorHeight ? height : null,
-            }),
+            cur(
+              {
+                width: sizeMeConfig.monitorWidth ? width : null,
+                height: sizeMeConfig.monitorHeight ? height : null,
+              },
+              otherProps
+            ),
             mergeWithCustomizer
           )
         , {});

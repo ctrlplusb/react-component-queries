@@ -207,13 +207,33 @@ describeWithDOM('Given the ComponentQueries library', () => {
       const renderSpy = sinonSandbox.spy(instance, 'render');
       expect(renderSpy.callCount).equals(0);
 
-      // Change the width so that the queries produce a new result.
+      // Set the props causes a rerender.
       mounted.setProps({ size: { width: 150 }, foo: 'bar' });
       expect(renderSpy.callCount).equals(1);
 
-      // Change the width so that the queries produce the same result.
-      mounted.setProps({ size: { width: 120 }, foo: 'bar' });
+      // Set the same props causes a rerender.
+      mounted.setProps({ size: { width: 150 }, foo: 'bar' });
       expect(renderSpy.callCount).equals(2);
+    });
+
+    it('Then it should pass the "other" props to the queries', () => {
+      let actualProps;
+
+      const ComponentQueriedComponent = componentQueries(
+        (_, props) => { actualProps = props; return {}; }
+      )(() => <div />);
+
+      // Initial mount should call queries.
+      const expectedMountProps = { foo: 'bar', baz: 1 };
+      const mounted = mount(
+        <ComponentQueriedComponent size={{ width: 50 }} {...expectedMountProps} />
+      );
+      expect(actualProps).eql(expectedMountProps);
+
+      // Update should call queries with updated props.
+      const expectedUpdateProps = { foo: 'bob', baz: 2 };
+      mounted.setProps(Object.assign({}, { size: { width: 100 } }, expectedUpdateProps));
+      expect(actualProps).eql(expectedUpdateProps);
     });
 
     it('Then height should be undefined if we are not monitoring height', () => {
