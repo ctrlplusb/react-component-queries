@@ -6,23 +6,25 @@ import React from 'react';
 import sinon from 'sinon';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
+import * as SizeMe from 'react-sizeme';
 import { describeWithDOM } from './jsdom';
 
 describeWithDOM('Given the ComponentQueries library', () => {
   let componentQueries;
   let sizeMeConfig;
+  let sinonSandbox;
 
   beforeEach(() => {
-    componentQueries = require('../src/componentQueries').default;
+    sinonSandbox = sinon.sandbox.create();
 
-    // Set up our mocks.
-    const componentQueriesRewireAPI = componentQueries.__RewireAPI__;
-
-    // Mock the SizeMe HOC to just return our ComponentQueries instance.
-    componentQueriesRewireAPI.__Rewire__('sizeMe', config => {
+    sinonSandbox.stub(SizeMe, 'default', config => {
       sizeMeConfig = config; return x => x;
     });
+
+    componentQueries = require('../src/componentQueries').default;
   });
+
+  afterEach(() => sinonSandbox.restore());
 
   describe('When setting up the ComponentQueries HOC', () => {
     describe('And no queries are provided', () => {
@@ -121,11 +123,6 @@ describeWithDOM('Given the ComponentQueries library', () => {
   });
 
   describe('When rendering a component queries component', () => {
-    let sinonSandbox;
-
-    beforeEach(() => { sinonSandbox = sinon.sandbox.create(); });
-    afterEach(() => sinonSandbox.restore());
-
     it('Then it should receive the appropriate props based on it\'s queries', () => {
       let receivedProps;
 
