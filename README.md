@@ -87,7 +87,7 @@ npm install react-sizeme react-component-queries --save
 
 ## Demo
 
-COMING SOON....
+[See it in action!](https://react-component-queries-demo-aowygvryob.now.sh)
 
 ## API
 
