@@ -12,11 +12,22 @@
 
 
 * Responsive Components!
+* A useful abstraction on the bare metal `react-sizeme` component.
 * Easy to use.
 * Extensive browser support.
 * Supports any Component type, i.e. stateless/class.
 * Works with React 0.14.x and 15.x.x.
 * 1.84KB gzipped standalone, even smaller if bundled into your own project.
+
+## TOCS
+
+  - [Overview](https://github.com/ctrlplusb/react-component-queries#overview)
+  - [Install](https://github.com/ctrlplusb/react-component-queries#install)
+  - [Demo](https://github.com/ctrlplusb/react-component-queries#demo)
+  - [API](https://github.com/ctrlplusb/react-component-queries#api)
+  - [Examples](https://github.com/ctrlplusb/react-component-queries#examples)
+  - [Prop Conflict Handling](https://github.com/ctrlplusb/react-component-queries#prop-conflict-handling)
+  - [Custom Prop Conflict Resolution](https://github.com/ctrlplusb/react-component-queries#custom-prop-conflict-resolution)
 
 ## Overview
 
@@ -41,21 +52,30 @@ It's great to be able to define your _queries_ as functions as this gives you an
 Once you have configured your _queries_ then pass them to `ComponentQueries` and wrap your component, like so:
 
 ```javascript
-ComponentQueries(query1, query2)(MyComponent)
+import componentQueries from 'react-component-queries';
+...
+componentQueries(query1, query2)(MyComponent)
 ```
 
 You can provide as many queries as you like, their results will be merged and passed to your component.
 
-Of course you can provide your queries inline too.  Below we are using the ES2015 destructuring and anonymous function syntax to provide a much more concise implementation:
+Of course you can provide your queries inline too.  Below we are using the ES2015 destructuring and anonymous function syntax:
 
 ```javascript
-ComponentQueries(
-  ({ width }) => width <= 330 ? { scale: 'mobile' } : {},
-  ({ width }) => width > 330 && width <=960 ? { scale: 'tablet' } : {},
-  ({ width }) => width > 960 ? { scale: 'desktop' } : {}
+componentQueries(
+  // This query emulates a "breakpoint" type of property
+  ({ width }) => {
+    if (width <= 330) return { breakpoint: 'small' };
+    if (width > 330 && width <=960) return { breakpoint: 'medium' };
+    return { breakpoint: 'large' };
+  },
+  // You can have multiple queries, and the props that are returned can 
+  // be of any type.  Boolean's are often useful.
+  ({ width }) => ({ isMassive: width > 1000000 })
 )(MyComponent);
 ```
 
+The above example will result in a `breakpoint` and an `isMassive` prop being passed to your component.
 
 ## Install
 
@@ -70,6 +90,79 @@ npm install react-sizeme react-component-queries --save
 Yep, it works:<br />
 https://react-component-queries-demo-qtbxtmivpq.now.sh
 
+## API
+
+`react-component-queries` exports a single function to be used as an HOC around your existing components.  This function supports two modes of usage: _simple_ and _configured_. 
+
+### _Simple_: `componentQueries(queries)`
+
+Wraps your component with the given component queries using the default configuration options.  You can provide either an array containing queries, or multiple arguments with each argument being a query function.
+
+e.g.
+
+```javascript
+componentQueries([
+  function (size, props) { return { foo: 'bar' }; },
+  function (size, props) { return { bob: true }; }
+])(MyComponent)
+```
+
+or
+
+```javascript
+componentQueries(
+  function (size, props) { return { foo: 'bar' }; },
+  function (size, props) { return { bob: true }; }
+)(MyComponent)
+```
+
+#### Arguments
+
+  - `query(size, [ownProps]) : props`(_Function_): A query function which can be provided as a set of arguments, or can be contained within an array containing one or more queries.
+    - `size`(_Object_): Contains the current dimensions of your wrapped component. As the default configuration is being used, it will only contain th e `width` dimension.
+       - `width`(_Number_): The current width of your component.  
+    - [`ownProps`](_Object_): The additional props which have been provided to your wrapped component.
+
+### _Configured_: `componentQueries(config)`
+
+Wraps your component with the given component queries and uses the provided configuration customisations.  You must provide an object containing a `queries` property as well as a `config` property.
+
+e.g.
+
+```javascript
+componentQueries({
+  queries: [
+    function (size, props) { return { foo: 'bar' }; },
+    function (size, props) { return { bob: true }; }
+  ],
+  config: {
+    monitorWidth: true,
+    monitorHeight: false,
+    refreshRate: 16,
+    pure: true
+  }
+})(MyComponent)
+```
+
+#### Arguments
+
+  - `config`(_Object_): An object containing the queries and configuration.
+     - `queries`(_Array_): An array of query functions:
+        - `query(size, [ownProps]) : props`(_Function_): A query function which can be provided as a set of arguments, or can be contained within an array containing one or more queries.
+            - `size`(_Object_): Contains the current dimensions of your wrapped component.
+               - `[width]`(_Number_): Will only be provided if the `monitorWidth` configuration option is set to `true`. The current width of your component.  
+               - `[height]`(_Number_): Will only be provided if the `monitorHeight` configuration option is set to `true`. The current height of your component.  
+            - [`ownProps`](_Object_): The additional props which have been provided to your wrapped component.
+    - `[config]`(_Object_): Custom configuration.
+       - `[monitorWidth]`(_Boolean_): If `true` then the width of your component will be tracked and provided within the `size` argument to your query functions. Defaults to `true`.
+       - `[monitorHeight]`(_Boolean_): If `true` then the height of your component will be tracked and provided within the `size` argument to your query functions. Defaults to `false`.
+       - `[refreshRate]`(_Number_): The maximum frequency, in milliseconds, at which size changes should be recalculated when changes in your Component's rendered size are being detected. This must not be set to lower than 16.  Defaults to `16`.
+       - `[pure]`(_Boolean_): Indicates if your component should be considered "pure", i.e. it should only be rerendered if the result of your query functions change, or if new props are provided to the wrapped component. If you set it to false then the wrapped component will render _every_ time the size changes, even if it doesn't result in new query provided props. Defaults to `true`.
+   - [`conflictResolver(prev, current, key) : Any`](_Function_): A custom function to use in order to resolve prop conflicts when two or more query functions return a prop with the same key.  This gives you an opportunity to do custom resolution for special prop types, e.g. `className` where you could instead concat the conflicted values.  The default implementation will return the value from the _last_ query function provided in the query array.  Please read the respective section further down in the readme for more info and examples of this.
+     - `prev`(_Any_): The value of the conflicted prop provided by the previously executed query function.
+     - `current`(_Any_): The value of the conflicted prop provided by the most recently executed query function.
+     - `key`(_Any_): The name of the prop which is in conflict.
+
 ## Examples 
 
 Below are a few super simple examples highlighting the usage and capabilities of the library. They are using the ES6 syntax described above to define the queries.
@@ -79,7 +172,7 @@ __Example 1: Queries on your Component's width__
 By default the ComponentQueries higher order component only operates on width. This is a design decision as in most cases we only wish to query against width, therefore we ignore height changes to minimize any potential DOM spamming.  If you would like to operate on height too then please see Example 2.
 
 ```javascript
-import ComponentQueries from 'react-component-queries';
+import componentQueries from 'react-component-queries';
 
 class MyComponent extends Component {
   render() {
@@ -92,11 +185,13 @@ class MyComponent extends Component {
   }
 }
 
-export default ComponentQueries(
+export default componentQueries(
   // Provide as many query functions as you need.
-  ({ width }) => width <= 330 ? { scale: 'mobile' } : {},
-  ({ width }) => width > 330 && width <=960 ? { scale: 'tablet' } : {},
-  ({ width }) => width > 960 ? { scale: 'desktop' } : {}
+  ({ width }) => {
+    if (width <= 330) return { breakpoint: 'small' };
+    if (width > 330 && width <=960) return { breakpoint: 'medium' };
+    return { breakpoint: 'large' };
+  }
 )(MyComponent);
 ```
 
@@ -105,14 +200,14 @@ __Example 2: Queries on your Component's width AND height__
 If you would like to operate on height also then you must use the extended configuration mode shown below to enable monitoring on the height of your component:
 
 ```javascript
-import ComponentQueries from 'react-component-queries';
+import componentQueries from 'react-component-queries';
 
 class MyComponent extends Component {
   render() {
     return (
       <div>
         {/* We recieve the following props from our queries */}
-        I am at {this.props.scale} scale.<br />
+        I am at {this.props.breakpoint} scale.<br />
         I am {this.props.short ? 'short' : 'long'}<br />
         I am {this.props.square ? 'square' : 'rectangular'}
       </div>
@@ -121,16 +216,20 @@ class MyComponent extends Component {
 }
 
 // NOTE: We are passing in a configuration object now.
-export default ComponentQueries({
+export default componentQueries({
   queries: [
     // Use just the width.
-    ({ width }) => width <= 330 ? { scale: 'mobile' } : {}
-     // Or use just the height.
-    ({ height }) => height > 200 ? { short: false } : { short: true },
+    ({ width }) => {
+      if (width <= 330) return { breakpoint: 'small' };
+      if (width > 330 && width <=960) return { breakpoint: 'medium' };
+      return { breakpoint: 'large' };
+    },
+    // Or use just the height.
+    ({ height }) => ({ short: height > 200 }),
     // Or use both.
-    ({ width, height }) => width === height ? { square: true } : { square: false },
+    ({ width, height }) => ({ square: width === height }),
   ],
-  sizeMeConfig: { monitorHeight: true }
+  config: { monitorHeight: true }
 })(MyComponent);
 ```
 
@@ -145,7 +244,7 @@ __The rule is:__ Custom passed in props take preference followed by the last ite
 Let's illustrate this given the following component:
 
 ```
-const MyComponent = ComponentQueries(
+const MyComponent = componentQueries(
   ({ width }) => { return { foo: 'bar' }; },
   ({ width }) => { return { foo: 'bob' }; }
 )(ComponentToWrap);
@@ -170,25 +269,25 @@ There may be cases when you want to provide custom rules for how conflicts are r
 To support this case we provide an extended configuration item called `conflictResolver`, which is specifically a function of the following structure:
 
 ```javascript
-function (currentPropValue, nextPropValue, propName) 
+function (prevPropValue: Any, currentPropValue: Any, propName: String) : Any
 ```
 
 To solve our above described case we could provide the following implementation of the `conflictResolver`:
 
 ```javascript
-const MyComponent = ComponentQueries({
+const MyComponent = componentQueries({
   queries: [
-    ({ width }) => { return { className: 'foo', poop: 'splash' }; },
-    ({ width }) => { return { className: 'bar', poop: 'plop' }; }
+    ({ width }) => ({ className: 'foo', poop: 'splash' }),
+    ({ width }) => ({ className: 'bar', poop: 'plop' })
   ],
-  conflictResolver: (current, next, key) => {
+  conflictResolver: (prev, current, key) => {
     // If the prop is "className" we will concat the new value to
     // the current value.
     if (key === 'className') {
-      return current.concat(' ', next);
+      return prev.concat(' ', current);
     }
-    // Otherwise we return the new value, overriding the old value. 
-    return next;
+    // Otherwise we return the current value, overriding the prev value. 
+    return current;
   }
 })(ComponentToWrap);
 ```
