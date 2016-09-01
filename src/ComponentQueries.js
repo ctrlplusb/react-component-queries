@@ -3,14 +3,22 @@ import invariant from 'invariant';
 import sizeMe from 'react-sizeme';
 import mergeWith from './utils/mergeWith';
 import getDisplayName from './utils/getDisplayName';
+import shallowEqual from './utils/shallowEqual';
 
-const defaultSizeMeConfig = {
+const defaultConfig = {
   monitorHeight: false,
   monitorWidth: true,
   refreshRate: 16,
+  pure: true,
 };
 
 const defaultConflictResolver = (x, y) => y;
+
+const defaultSizeMeConfig = () => ({
+  monitorWidth: defaultConfig.monitorWidth,
+  monitorHeight: defaultConfig.monitorHeight,
+  refreshRate: defaultConfig.refreshRate,
+});
 
 /**
  * :: Queries -> Component -> Component
@@ -23,31 +31,41 @@ const defaultConflictResolver = (x, y) => y;
 function componentQueries(...params) {
   let queries;
   let sizeMeConfig;
+  let pure;
   let conflictResolver;
 
   if (params.length === 1 && params[0].queries) {
     queries = params[0].queries || [];
-    sizeMeConfig = params[0].sizeMeConfig || defaultSizeMeConfig;
+    if (params[0].sizeMeConfig) {
+      // Old school config style.
+      sizeMeConfig = params[0].sizeMeConfig || defaultSizeMeConfig();
+      pure = defaultConfig.pure;  // this didn't exist before, so we default it.
+    } else if (params[0].config) {
+      // New school config style.
+      pure = params[0].config.pure;
+      const { monitorHeight, monitorWidth, refreshRate } = params[0].config;
+      sizeMeConfig = {
+        monitorHeight: monitorHeight != null ? monitorHeight : defaultConfig.monitorHeight,
+        monitorWidth: monitorWidth != null ? monitorWidth : defaultConfig.monitorWidth,
+        refreshRate: refreshRate != null ? refreshRate : defaultConfig.refreshRate,
+      };
+    }
     conflictResolver = params[0].conflictResolver || defaultConflictResolver;
-
     invariant(
       typeof conflictResolver === 'function',
       'The conflict resolver you provide to ComponentQueries should be a function.'
     );
     invariant(
       Array.isArray(queries),
-      '"queries" must be provided as an array when using the complex configuration.');
+      '"queries" must be provided as an array when using the complex configuration.'
+    );
   } else {
     queries = params;
   }
 
-  sizeMeConfig = sizeMeConfig || defaultSizeMeConfig;
-  conflictResolver = conflictResolver || defaultConflictResolver;
-  const mergeWithCustomizer = (x, y, key) => {
-    if (x === undefined) return undefined;
-    return conflictResolver(x, y, key);
-  };
-
+  // TODO: Consider removing this check.  Perhaps it's best to just silently
+  // pass through if no queries were provided?  Maybe a development based
+  // warning would be the most useful.
   invariant(
     queries.length > 0,
     'You must provide at least one query to ComponentQueries.');
@@ -55,6 +73,16 @@ function componentQueries(...params) {
     queries.filter(q => typeof q !== 'function').length === 0,
     'All provided queries for ComponentQueries should be functions.'
   );
+
+  // We will default out any configuration if it wasn't set.
+  sizeMeConfig = sizeMeConfig || defaultSizeMeConfig();
+  conflictResolver = conflictResolver || defaultConflictResolver;
+  pure = pure != null ? pure : defaultConfig.pure;
+
+  const mergeWithCustomizer = (x, y, key) => {
+    if (x === undefined) return undefined;
+    return conflictResolver(x, y, key);
+  };
 
   return function WrapComponent(WrappedComponent) {
     class ComponentWithComponentQueries extends Component {
@@ -76,19 +104,27 @@ function componentQueries(...params) {
       }
 
       componentWillReceiveProps(nextProps) {
-        const { size: currentSize } = this.props;
+        const { size } = this.props;
         const { size: nextSize } = nextProps;
 
-        if (this.hasSizeChanged(currentSize, nextSize)) {
+        if (!shallowEqual(size, nextSize)) {
           this.runQueries(nextSize);
         }
       }
 
-      hasSizeChanged(current, next) {
-        const { height: cHeight, width: cWidth } = current;
-        const { height: nHeight, width: nWidth } = next;
+      shouldComponentUpdate(nextProps, nextState) {
+        const {
+          size, // eslint-disable-line no-unused-vars
+          ...otherProps,
+        } = this.props;
+        const {
+          size: nextSize, // eslint-disable-line no-unused-vars
+          ...nextOtherProps,
+        } = nextProps;
 
-        return (cHeight !== nHeight) || (cWidth !== nWidth);
+        return !pure
+          || !shallowEqual(otherProps, nextOtherProps)
+          || !shallowEqual(this.state.queryResult, nextState.queryResult);
       }
 
       runQueries({ width, height }) {

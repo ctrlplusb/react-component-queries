@@ -3,10 +3,10 @@
 /* eslint-disable no-underscore-dangle */
 
 import React from 'react';
+import sinon from 'sinon';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 import { describeWithDOM } from './jsdom';
-
 
 describeWithDOM('Given the ComponentQueries library', () => {
   let componentQueries;
@@ -99,9 +99,33 @@ describeWithDOM('Given the ComponentQueries library', () => {
         });
       });
     });
+
+    describe('And a custom config is provided', () => {
+      it('Then the custom config should be given to SizeMe', () => {
+        componentQueries({
+          queries: [() => ({})],
+          config: {
+            monitorHeight: true,
+            monitorWidth: false,
+            refreshRate: 200,
+          },
+        })(() => <div />);
+
+        expect(sizeMeConfig).to.eql({
+          monitorHeight: true,
+          monitorWidth: false,
+          refreshRate: 200,
+        });
+      });
+    });
   });
 
   describe('When rendering a component queries component', () => {
+    let sinonSandbox;
+
+    beforeEach(() => { sinonSandbox = sinon.sandbox.create(); });
+    afterEach(() => sinonSandbox.restore());
+
     it('Then it should receive the appropriate props based on it\'s queries', () => {
       let receivedProps;
 
@@ -111,6 +135,7 @@ describeWithDOM('Given the ComponentQueries library', () => {
           ({ width }) => (width > 100 ? { bob: 'baz' } : {}),
           ({ height }) => (height <= 100 ? { zip: 'zap' } : {}),
         ],
+        // NOTE: This is the old configuration.
         sizeMeConfig: {
           monitorWidth: true,
           monitorHeight: true,
@@ -132,6 +157,66 @@ describeWithDOM('Given the ComponentQueries library', () => {
       // Update size, with change.
       mounted.setProps({ size: { width: 101, height: 101 } });
       expect(receivedProps).to.eql({ bob: 'baz' });
+    });
+
+    it('Then it should only rerender if the props have changed', () => {
+      const ComponentQueriedComponent = componentQueries({
+        queries: [
+          ({ width }) => (width <= 100 ? { foo: 'bar' } : {}),
+          ({ width }) => (width > 100 ? { bob: 'baz' } : {}),
+        ],
+      })(() => <div />);
+
+      // Initial render
+      const mounted = mount(
+        <ComponentQueriedComponent size={{ width: 50 }} foo="bar" />
+      );
+      const instance = mounted.instance();
+
+      // Set up a spy on the render
+      const renderSpy = sinonSandbox.spy(instance, 'render');
+      expect(renderSpy.callCount).equals(0);
+
+      // Change the width so that the queries produce a new result.
+      mounted.setProps({ size: { width: 150 }, foo: 'bar' });
+      expect(renderSpy.callCount).equals(1);
+
+      // Change the width so that the queries produce the same result.
+      mounted.setProps({ size: { width: 120 }, foo: 'bar' });
+      expect(renderSpy.callCount).equals(1);
+
+      // Change the value of an "other" prop should cause a new render.
+      mounted.setProps({ size: { width: 120 }, foo: 'zip' });
+      expect(renderSpy.callCount).equals(2);
+    });
+
+    it('Then an impure component should always render', () => {
+      const ComponentQueriedComponent = componentQueries({
+        queries: [
+          ({ width }) => (width <= 100 ? { foo: 'bar' } : {}),
+        ],
+        config: {
+          pure: false,
+        },
+      })(() => <div />);
+
+      // Initial render
+      const mounted = mount(
+        <ComponentQueriedComponent size={{ width: 50 }} foo="bar" />
+      );
+      const instance = mounted.instance();
+
+      // Set up a spy on the render
+      const renderSpy = sinonSandbox.spy(instance, 'render');
+      expect(renderSpy.callCount).equals(0);
+
+      // Change the width so that the queries produce a new result.
+      mounted.setProps({ size: { width: 150 }, foo: 'bar' });
+      expect(renderSpy.callCount).equals(1);
+
+      // Change the width so that the queries produce the same result.
+      mounted.setProps({ size: { width: 120 }, foo: 'bar' });
+      expect(renderSpy.callCount).equals(2);
     });
 
     it('Then height should be undefined if we are not monitoring height', () => {
