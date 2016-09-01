@@ -151,7 +151,7 @@ componentQueries({
         - `size` (_Object_): Contains the current dimensions of your wrapped component.
           - `[width]` (_Number_): Will only be provided if the `monitorWidth` configuration option is set to `true`. The current width of your component.  
           - `[height]` (_Number_): Will only be provided if the `monitorHeight` configuration option is set to `true`. The current height of your component.  
-          - [`ownProps`] \(_Object_): The additional props which have been provided to your wrapped component.
+        - [`ownProps`] \(_Object_): The additional props which have been provided to your wrapped component.
     - `[config]` (_Object_): Custom configuration.
       - `[monitorWidth]` (_Boolean_): If `true` then the width of your component will be tracked and provided within the `size` argument to your query functions. Defaults to `true`.
       - `[monitorHeight]` (_Boolean_): If `true` then the height of your component will be tracked and provided within the `size` argument to your query functions. Defaults to `false`.
