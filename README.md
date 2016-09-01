@@ -118,10 +118,10 @@ componentQueries(
 
 #### Arguments
 
-  - `query(size, [ownProps]) : props`(_Function_): A query function which can be provided as a set of arguments, or can be contained within an array containing one or more queries.
-    - `size`(_Object_): Contains the current dimensions of your wrapped component. As the default configuration is being used, it will only contain th e `width` dimension.
-       - `width`(_Number_): The current width of your component.  
-    - [`ownProps`](_Object_): The additional props which have been provided to your wrapped component.
+  - `query(size, [ownProps]) : props` (_Function_): A query function which can be provided as a set of arguments, or can be contained within an array containing one or more queries.
+    - `size` (_Object_): Contains the current dimensions of your wrapped component. As the default configuration is being used, it will only contain th e `width` dimension.
+       - `width` (_Number_): The current width of your component.  
+    - [`ownProps`] \(_Object_): The additional props which have been provided to your wrapped component.
 
 ### _Configured_: `componentQueries(config)`
 
@@ -146,22 +146,22 @@ componentQueries({
 
 #### Arguments
 
-  - `config`(_Object_): An object containing the queries and configuration.
-    - `queries`(_Array_): An array of query functions:
-      - `query(size, [ownProps]) : props`(_Function_): A query function which can be provided as a set of arguments, or can be contained within an array containing one or more queries.
-        - `size`(_Object_): Contains the current dimensions of your wrapped component.
-          - `[width]`(_Number_): Will only be provided if the `monitorWidth` configuration option is set to `true`. The current width of your component.  
-          - `[height]`(_Number_): Will only be provided if the `monitorHeight` configuration option is set to `true`. The current height of your component.  
-          - [`ownProps`](_Object_): The additional props which have been provided to your wrapped component.
-    - `[config]`(_Object_): Custom configuration.
-      - `[monitorWidth]`(_Boolean_): If `true` then the width of your component will be tracked and provided within the `size` argument to your query functions. Defaults to `true`.
-      - `[monitorHeight]`(_Boolean_): If `true` then the height of your component will be tracked and provided within the `size` argument to your query functions. Defaults to `false`.
-      - `[refreshRate]`(_Number_): The maximum frequency, in milliseconds, at which size changes should be recalculated when changes in your Component's rendered size are being detected. This must not be set to lower than 16.  Defaults to `16`.
-      - `[pure]`(_Boolean_): Indicates if your component should be considered "pure", i.e. it should only be rerendered if the result of your query functions change, or if new props are provided to the wrapped component. If you set it to false then the wrapped component will render _every_ time the size changes, even if it doesn't result in new query provided props. Defaults to `true`.
-    - [`conflictResolver(prev, current, key) : Any`](_Function_): A custom function to use in order to resolve prop conflicts when two or more query functions return a prop with the same key.  This gives you an opportunity to do custom resolution for special prop types, e.g. `className` where you could instead concat the conflicted values.  The default implementation will return the value from the _last_ query function provided in the query array.  Please read the respective section further down in the readme for more info and examples of this.
-      - `prev`(_Any_): The value of the conflicted prop provided by the previously executed query function.
-      - `current`(_Any_): The value of the conflicted prop provided by the most recently executed query function.
-      - `key`(_Any_): The name of the prop which is in conflict.
+  - `config` (_Object_): An object containing the queries and configuration.
+    - `queries` (_Array_): An array of query functions:
+      - `query(size, [ownProps]) : props` (_Function_): A query function which can be provided as a set of arguments, or can be contained within an array containing one or more queries.
+        - `size` (_Object_): Contains the current dimensions of your wrapped component.
+          - `[width]` (_Number_): Will only be provided if the `monitorWidth` configuration option is set to `true`. The current width of your component.  
+          - `[height]` (_Number_): Will only be provided if the `monitorHeight` configuration option is set to `true`. The current height of your component.  
+          - [`ownProps`] \(_Object_): The additional props which have been provided to your wrapped component.
+    - `[config]` (_Object_): Custom configuration.
+      - `[monitorWidth]` (_Boolean_): If `true` then the width of your component will be tracked and provided within the `size` argument to your query functions. Defaults to `true`.
+      - `[monitorHeight]` (_Boolean_): If `true` then the height of your component will be tracked and provided within the `size` argument to your query functions. Defaults to `false`.
+      - `[refreshRate]` (_Number_): The maximum frequency, in milliseconds, at which size changes should be recalculated when changes in your Component's rendered size are being detected. This must not be set to lower than 16.  Defaults to `16`.
+      - `[pure]` (_Boolean_): Indicates if your component should be considered "pure", i.e. it should only be rerendered if the result of your query functions change, or if new props are provided to the wrapped component. If you set it to false then the wrapped component will render _every_ time the size changes, even if it doesn't result in new query provided props. Defaults to `true`.
+    - [`conflictResolver(prev, current, key) : Any`] \(_Function_): A custom function to use in order to resolve prop conflicts when two or more query functions return a prop with the same key.  This gives you an opportunity to do custom resolution for special prop types, e.g. `className` where you could instead concat the conflicted values.  The default implementation will return the value from the _last_ query function provided in the query array.  Please read the respective section further down in the readme for more info and examples of this.
+      - `prev` (_Any_): The value of the conflicted prop provided by the previously executed query function.
+      - `current` (_Any_): The value of the conflicted prop provided by the most recently executed query function.
+      - `key` (_Any_): The name of the prop which is in conflict.
 
 ## Examples 
 
