@@ -22,6 +22,7 @@
 ## TOCS
 
   - [Overview](https://github.com/ctrlplusb/react-component-queries#overview)
+  - [Why use this instead of `react-sizeme`?](https://github.com/ctrlplusb/react-component-queries#why-use-this-instead-of-react-sizeme)
   - [Install](https://github.com/ctrlplusb/react-component-queries#install)
   - [Demo](https://github.com/ctrlplusb/react-component-queries#demo)
   - [API](https://github.com/ctrlplusb/react-component-queries#api)
@@ -31,7 +32,7 @@
 
 ## Overview
 
-`react-component-queries` allows you to define queries against the dimensions of your Component in order to produce custom props for your Component. 
+`react-component-queries` is a useful abstraction of the [`react-sizeme`](https://github.com/ctrlplusb/react-sizeme) library.  It allows you to define queries against the dimensions of your Component in order to produce custom props for your Component. 
 
 Any time the dimensions of your rendered Component changes the queries will automatically be run again.
 
@@ -76,6 +77,25 @@ componentQueries(
 ```
 
 The above example will result in a `breakpoint` and an `isMassive` prop being passed to your component.
+
+## Why use this instead of `react-sizeme`?
+
+[`react-sizeme`](https://github.com/ctrlplusb/react-sizeme) is great, however, it suffers with a couple of problems in my opinion:
+  
+  1. It is raw in that it provides you with the actual dimensions of your component and then requires to execute logic within your component to establish the desired behaviour of your component.  This can be a bit tedious and polute your component with a lot of if-else statements.  
+  2. It is possible that your component may gets spammed with updated `size` props. This is because _any_ time your component changes in size `react-sizeme` will kick in.
+
+`react-component-queries` was built to solve these problems. It solves problem 1 by moving the dimension based logic out of your component.  It then solves problem 2 by ensuring that your component will only be called for re-render if any of the prop values change.  That saves you some error prone boilerplate.
+
+This allows you to deal with "simpler" props, for example; a boolean flag indicating if the component is square, an enum representing it's size ('small'|'medium'|'large'), a className, or a style object.  Whatever you feel is most appropriate for your use case.
+
+So, to recap, some of the benefits of using this abstraction are:
+
+  - Easily implement `shouldComponentUpdate` based on the props.
+  - The _query functions_ themselves can be formed into a reusable library of queries for all your components.
+  - Simplify your components by moving the dimension logic away from them, which in turn is easier to test in isolation.
+
+I am not trying to take away from `react-sizeme`, but I want to highlight that it's a bit more of a low level HOC, and if you want to use it you should be aware of the problems above and consider using your own abstraction or this one.
 
 ## Install
 
