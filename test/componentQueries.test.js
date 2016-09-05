@@ -104,12 +104,15 @@ describeWithDOM('Given the ComponentQueries library', () => {
 
     describe('And a custom config is provided', () => {
       it('Then the custom config should be given to SizeMe', () => {
+        const conflictResolver = () => undefined;
+
         componentQueries({
           queries: [() => ({})],
           config: {
             monitorHeight: true,
             monitorWidth: false,
             refreshRate: 200,
+            conflictResolver,
           },
         })(() => <div />);
 
@@ -117,6 +120,7 @@ describeWithDOM('Given the ComponentQueries library', () => {
           monitorHeight: true,
           monitorWidth: false,
           refreshRate: 200,
+          conflictResolver,
         });
       });
     });

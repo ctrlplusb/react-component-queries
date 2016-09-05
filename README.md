@@ -177,10 +177,10 @@ componentQueries({
       - `[monitorHeight]` (_Boolean_): If `true` then the height of your component will be tracked and provided within the `size` argument to your query functions. Defaults to `false`.
       - `[refreshRate]` (_Number_): The maximum frequency, in milliseconds, at which size changes should be recalculated when changes in your Component's rendered size are being detected. This must not be set to lower than 16.  Defaults to `16`.
       - `[pure]` (_Boolean_): Indicates if your component should be considered "pure", i.e. it should only be rerendered if the result of your query functions change, or if new props are provided to the wrapped component. If you set it to false then the wrapped component will render _every_ time the size changes, even if it doesn't result in new query provided props. Defaults to `true`.
-    - [`conflictResolver(prev, current, key) : Any`] \(_Function_): A custom function to use in order to resolve prop conflicts when two or more query functions return a prop with the same key.  This gives you an opportunity to do custom resolution for special prop types, e.g. `className` where you could instead concat the conflicted values.  The default implementation will return the value from the _last_ query function provided in the query array.  Please read the respective section further down in the readme for more info and examples of this.
-      - `prev` (_Any_): The value of the conflicted prop provided by the previously executed query function.
-      - `current` (_Any_): The value of the conflicted prop provided by the most recently executed query function.
-      - `key` (_Any_): The name of the prop which is in conflict.
+      - [`conflictResolver(prev, current, key) : Any`] \(_Function_): A custom function to use in order to resolve prop conflicts when two or more query functions return a prop with the same key.  This gives you an opportunity to do custom resolution for special prop types, e.g. `className` where you could instead concat the conflicted values.  The default implementation will return the value from the _last_ query function provided in the query array.  Please read the respective section further down in the readme for more info and examples of this.
+         - `prev` (_Any_): The value of the conflicted prop provided by the previously executed query function.
+         - `current` (_Any_): The value of the conflicted prop provided by the most recently executed query function.
+         - `key` (_Any_): The name of the prop which is in conflict.
 
 ## Examples 
 

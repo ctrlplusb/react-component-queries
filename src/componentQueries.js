@@ -43,14 +43,20 @@ function componentQueries(...params) {
     } else if (params[0].config) {
       // New school config style.
       pure = params[0].config.pure;
-      const { monitorHeight, monitorWidth, refreshRate } = params[0].config;
+      const {
+        monitorHeight,
+        monitorWidth,
+        refreshRate,
+        conflictResolver: _conflictResolver,
+      } = params[0].config;
       sizeMeConfig = {
         monitorHeight: monitorHeight != null ? monitorHeight : defaultConfig.monitorHeight,
         monitorWidth: monitorWidth != null ? monitorWidth : defaultConfig.monitorWidth,
         refreshRate: refreshRate != null ? refreshRate : defaultConfig.refreshRate,
+        conflictResolver: _conflictResolver,
       };
     }
-    conflictResolver = params[0].conflictResolver || defaultConflictResolver;
+    conflictResolver = conflictResolver || params[0].conflictResolver || defaultConflictResolver;
     invariant(
       typeof conflictResolver === 'function',
       'The conflict resolver you provide to ComponentQueries should be a function.'
@@ -94,6 +100,8 @@ function componentQueries(...params) {
           height: PropTypes.number,
         }).isRequired,
       };
+
+      static WrappedComponent = WrappedComponent;
 
       state = {
         queryResult: {},
