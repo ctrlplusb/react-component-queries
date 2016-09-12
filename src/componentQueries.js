@@ -47,13 +47,13 @@ function componentQueries(...params) {
         monitorHeight,
         monitorWidth,
         refreshRate,
-        conflictResolver: _conflictResolver,
+        refreshMode,
       } = params[0].config;
       sizeMeConfig = {
         monitorHeight: monitorHeight != null ? monitorHeight : defaultConfig.monitorHeight,
         monitorWidth: monitorWidth != null ? monitorWidth : defaultConfig.monitorWidth,
         refreshRate: refreshRate != null ? refreshRate : defaultConfig.refreshRate,
-        conflictResolver: _conflictResolver,
+        refreshMode: refreshMode != null ? refreshMode : defaultConfig.refreshMode,
       };
     }
     conflictResolver = conflictResolver || params[0].conflictResolver || defaultConflictResolver;
@@ -96,8 +96,8 @@ function componentQueries(...params) {
 
       static propTypes = {
         size: PropTypes.shape({
-          width: PropTypes.number,
-          height: PropTypes.number,
+          width: PropTypes.number, // eslint-disable-line react/no-unused-prop-types
+          height: PropTypes.number, // eslint-disable-line react/no-unused-prop-types
         }).isRequired,
       };
 

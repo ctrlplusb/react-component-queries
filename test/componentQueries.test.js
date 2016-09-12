@@ -17,7 +17,7 @@ describeWithDOM('Given the ComponentQueries library', () => {
   beforeEach(() => {
     sinonSandbox = sinon.sandbox.create();
 
-    sinonSandbox.stub(SizeMe, 'default', config => {
+    sinonSandbox.stub(SizeMe, 'default', (config) => {
       sizeMeConfig = config; return x => x;
     });
 
@@ -112,6 +112,7 @@ describeWithDOM('Given the ComponentQueries library', () => {
             monitorHeight: true,
             monitorWidth: false,
             refreshRate: 200,
+            refreshMode: 'debounce',
             conflictResolver,
           },
         })(() => <div />);
@@ -120,7 +121,7 @@ describeWithDOM('Given the ComponentQueries library', () => {
           monitorHeight: true,
           monitorWidth: false,
           refreshRate: 200,
-          conflictResolver,
+          refreshMode: 'debounce',
         });
       });
     });
