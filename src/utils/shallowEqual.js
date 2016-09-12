@@ -14,7 +14,7 @@ export default function shallowEqual(objA, objB) {
 
   // Test for A's keys different from B.
   const hasOwn = Object.prototype.hasOwnProperty;
-  for (let i = 0; i < keysA.length; i++) {
+  for (let i = 0; i < keysA.length; i++) { // eslint-disable-line no-plusplus
     if (!hasOwn.call(objB, keysA[i]) ||
         objA[keysA[i]] !== objB[keysA[i]]) {
       return false;
