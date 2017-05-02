@@ -158,7 +158,8 @@ componentQueries({
     monitorWidth: true,
     monitorHeight: false,
     refreshRate: 16,
-    pure: true
+    pure: true,
+    sizePassthrough: 'componentDimensions'
   }
 })(MyComponent)
 ```
