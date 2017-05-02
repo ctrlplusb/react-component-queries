@@ -6,10 +6,11 @@ import getDisplayName from './utils/getDisplayName';
 import shallowEqual from './utils/shallowEqual';
 
 const defaultConfig = {
-  monitorHeight: false,
-  monitorWidth: true,
-  refreshRate: 16,
-  pure: true,
+  monitorHeight:   false,
+  monitorWidth:    true,
+  refreshRate:     16,
+  pure:            true,
+  sizePassthrough: undefined
 };
 
 const defaultConflictResolver = (x, y) => y;
@@ -33,16 +34,18 @@ function componentQueries(...params) {
   let sizeMeConfig;
   let pure;
   let conflictResolver;
-
+  let sizePassthrough;
   if (params.length === 1 && params[0].queries) {
     queries = params[0].queries || [];
     if (params[0].sizeMeConfig) {
       // Old school config style.
       sizeMeConfig = params[0].sizeMeConfig || defaultSizeMeConfig();
       pure = defaultConfig.pure;  // this didn't exist before, so we default it.
+      sizePassthrough = defaultConfig.sizePassthrough;
     } else if (params[0].config) {
       // New school config style.
       pure = params[0].config.pure;
+      sizePassthrough = params[0].config.sizePassthrough;
       const {
         monitorHeight,
         monitorWidth,
@@ -165,6 +168,14 @@ function componentQueries(...params) {
           otherProps,
           mergeWithCustomizer
         );
+
+        if ( sizePassthrough !== undefined ) {
+          if ( typeof sizePassthrough === 'string' ) {
+            allProps[sizePassthrough] = size
+          } else {
+            allProps.size = size
+          }
+        }
 
         return (
           <WrappedComponent {...allProps} />
