@@ -46,6 +46,7 @@ function componentQueries(...params) {
       // New school config style.
       pure = params[0].config.pure;
       sizePassthrough = params[0].config.sizePassthrough;
+      if ( sizePassthrough === true ) { sizePassthrough = 'size' }
       const {
         monitorHeight,
         monitorWidth,
@@ -169,13 +170,7 @@ function componentQueries(...params) {
           mergeWithCustomizer
         );
 
-        if ( sizePassthrough !== undefined ) {
-          if ( typeof sizePassthrough === 'string' ) {
-            allProps[sizePassthrough] = size
-          } else {
-            allProps.size = size
-          }
-        }
+        if ( sizePassthrough ) { allProps[sizePassthrough] = size }
 
         return (
           <WrappedComponent {...allProps} />
