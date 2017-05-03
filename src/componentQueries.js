@@ -19,6 +19,7 @@ const defaultConflictResolver = (x, y) => y;
 const defaultSizeMeConfig = () => ({
   monitorWidth: defaultConfig.monitorWidth,
   monitorHeight: defaultConfig.monitorHeight,
+  monitorPosition: defaultConfig.monitorPosition,
   refreshRate: defaultConfig.refreshRate,
 });
 
