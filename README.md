@@ -157,6 +157,7 @@ componentQueries({
   config: {
     monitorWidth: true,
     monitorHeight: false,
+    monitorPosition: false,
     refreshRate: 16,
     pure: true,
     sizePassthrough: 'componentDimensions'
@@ -172,10 +173,12 @@ componentQueries({
         - `size` (_Object_): Contains the current dimensions of your wrapped component.
           - `[width]` (_Number_): Will only be provided if the `monitorWidth` configuration option is set to `true`. The current width of your component.
           - `[height]` (_Number_): Will only be provided if the `monitorHeight` configuration option is set to `true`. The current height of your component.
+          - `[position]` (_Object_): Will only be provided if the `monitorPosition` configuration option is set to `true`. The current position of your component.  It will include `bottom`, `top`, `left`, and `right` properties.
         - [`ownProps`] \(_Object_): The additional props which have been provided to your wrapped component.
     - `[config]` (_Object_): Custom configuration.
       - `[monitorWidth]` (_Boolean_): If `true` then the width of your component will be tracked and provided within the `size` argument to your query functions. Defaults to `true`.
       - `[monitorHeight]` (_Boolean_): If `true` then the height of your component will be tracked and provided within the `size` argument to your query functions. Defaults to `false`.
+      - `[monitorPosition]` (_Boolean_): If `true` then the position of your component will be tracked and provided within the `size` argument to your query functions. Defaults to `false`.
       - `[refreshRate]` (_Number_): The maximum frequency, in milliseconds, at which size changes should be recalculated when changes in your Component's rendered size are being detected. This must not be set to lower than 16.  Defaults to `16`.
       - `[pure]` (_Boolean_): Indicates if your component should be considered "pure", i.e. it should only be rerendered if the result of your query functions change, or if new props are provided to the wrapped component. If you set it to false then the wrapped component will render _every_ time the size changes, even if it doesn't result in new query provided props. Defaults to `true`.
       - `[sizePassthrough]` (_Boolean_ || _String_): If you need the size object to be passed to your component on every render, settings this to true will pass it as the `size` prop.  If `sizePassthrough` is a _String_, the `size` object will be passed as the given string.
