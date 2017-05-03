@@ -6,11 +6,11 @@ import getDisplayName from './utils/getDisplayName';
 import shallowEqual from './utils/shallowEqual';
 
 const defaultConfig = {
-  monitorHeight:   false,
-  monitorWidth:    true,
-  refreshRate:     16,
-  pure:            true,
-  sizePassthrough: undefined
+  monitorHeight: false,
+  monitorWidth: true,
+  refreshRate: 16,
+  pure: true,
+  sizePassthrough: undefined,
 };
 
 const defaultConflictResolver = (x, y) => y;
@@ -46,7 +46,7 @@ function componentQueries(...params) {
       // New school config style.
       pure = params[0].config.pure;
       sizePassthrough = params[0].config.sizePassthrough;
-      if ( sizePassthrough === true ) { sizePassthrough = 'size' }
+      if (sizePassthrough === true) { sizePassthrough = 'size'; }
       const {
         monitorHeight,
         monitorWidth,
@@ -63,11 +63,11 @@ function componentQueries(...params) {
     conflictResolver = conflictResolver || params[0].conflictResolver || defaultConflictResolver;
     invariant(
       typeof conflictResolver === 'function',
-      'The conflict resolver you provide to ComponentQueries should be a function.'
+      'The conflict resolver you provide to ComponentQueries should be a function.',
     );
     invariant(
       Array.isArray(queries),
-      '"queries" must be provided as an array when using the complex configuration.'
+      '"queries" must be provided as an array when using the complex configuration.',
     );
   } else {
     queries = params;
@@ -81,7 +81,7 @@ function componentQueries(...params) {
     'You must provide at least one query to ComponentQueries.');
   invariant(
     queries.filter(q => typeof q !== 'function').length === 0,
-    'All provided queries for ComponentQueries should be functions.'
+    'All provided queries for ComponentQueries should be functions.',
   );
 
   // We will default out any configuration if it wasn't set.
@@ -128,11 +128,11 @@ function componentQueries(...params) {
       shouldComponentUpdate(nextProps, nextState) {
         const {
           size, // eslint-disable-line no-unused-vars
-          ...otherProps,
+          ...otherProps
         } = this.props;
         const {
           size: nextSize, // eslint-disable-line no-unused-vars
-          ...nextOtherProps,
+          ...nextOtherProps
         } = nextProps;
 
         return !pure
@@ -149,9 +149,9 @@ function componentQueries(...params) {
                 width: sizeMeConfig.monitorWidth ? width : null,
                 height: sizeMeConfig.monitorHeight ? height : null,
               },
-              otherProps
+              otherProps,
             ),
-            mergeWithCustomizer
+            mergeWithCustomizer,
           )
         , {});
 
@@ -161,16 +161,16 @@ function componentQueries(...params) {
       render() {
         const {
           size, // eslint-disable-line no-unused-vars
-          ...otherProps,
+          ...otherProps
         } = this.props;
 
         const allProps = mergeWith(
           this.state.queryResult,
           otherProps,
-          mergeWithCustomizer
+          mergeWithCustomizer,
         );
 
-        if ( sizePassthrough ) { allProps[sizePassthrough] = size }
+        if (sizePassthrough) { allProps[sizePassthrough] = size; }
 
         return (
           <WrappedComponent {...allProps} />
