@@ -8,6 +8,7 @@ import shallowEqual from './utils/shallowEqual';
 const defaultConfig = {
   monitorHeight: false,
   monitorWidth: true,
+  monitorPosition: false,
   refreshRate: 16,
   pure: true,
   sizePassthrough: undefined,
@@ -50,12 +51,14 @@ function componentQueries(...params) {
       const {
         monitorHeight,
         monitorWidth,
+        monitorPosition,
         refreshRate,
         refreshMode,
       } = params[0].config;
       sizeMeConfig = {
         monitorHeight: monitorHeight != null ? monitorHeight : defaultConfig.monitorHeight,
         monitorWidth: monitorWidth != null ? monitorWidth : defaultConfig.monitorWidth,
+        monitorPosition: monitorPosition !== null ? monitorPosition : defaultConfig.monitorPosition,
         refreshRate: refreshRate != null ? refreshRate : defaultConfig.refreshRate,
         refreshMode: refreshMode != null ? refreshMode : defaultConfig.refreshMode,
       };
