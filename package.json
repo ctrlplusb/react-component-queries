@@ -1,5 +1,6 @@
 {
   "name": "react-component-queries",
+  "version": "1.0.0",
   "description": "Provide props to your Components based on their Width and/or Height.",
   "main": "lib/react-component-queries.js",
   "scripts": {
@@ -84,6 +85,7 @@
     }
   },
   "dependencies": {
-    "invariant": "^2.2.0"
+    "invariant": "^2.2.0",
+    "react-component-queries": "https://github.com/Dash-OS/react-component-queries"
   }
 }

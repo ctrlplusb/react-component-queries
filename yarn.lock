@@ -1591,16 +1591,9 @@ diff@1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/diff/-/diff-1.4.0.tgz#7f28d2eb9ee7b15a97efd89ce63dcfdaa3ccbabf"
 
-doctrine@1.5.0:
+doctrine@1.5.0, doctrine@^1.2.2:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/doctrine/-/doctrine-1.5.0.tgz#379dce730f6166f76cefa4e6707a159b02c5a6fa"
-  dependencies:
-    esutils "^2.0.2"
-    isarray "^1.0.0"
-
-doctrine@^1.2.2:
-  version "1.2.3"
-  resolved "https://registry.yarnpkg.com/doctrine/-/doctrine-1.2.3.tgz#6aec6bbd62cf89dd498cae70c0ed9f49da873a6a"
   dependencies:
     esutils "^2.0.2"
     isarray "^1.0.0"
@@ -3934,6 +3927,12 @@ rc@^1.1.7:
 react-addons-test-utils@15.3.1:
   version "15.3.1"
   resolved "https://registry.yarnpkg.com/react-addons-test-utils/-/react-addons-test-utils-15.3.1.tgz#b3b64e15d7d85f6d190020dca641218684b1124d"
+
+"react-component-queries@https://github.com/Dash-OS/react-component-queries":
+  version ""
+  resolved "https://github.com/Dash-OS/react-component-queries#ae4b376885330d27008af11f8bf023b254118ad5"
+  dependencies:
+    invariant "^2.2.0"
 
 react-dom@15.3.1:
   version "15.3.1"
