@@ -85,7 +85,6 @@
     }
   },
   "dependencies": {
-    "invariant": "^2.2.0",
-    "react-component-queries": "https://github.com/Dash-OS/react-component-queries"
+    "invariant": "^2.2.0"
   }
 }
