@@ -73,7 +73,7 @@
   "peerDependencies": {
     "react": "^0.14.0 || ^15.0.0",
     "react-dom": "^0.14.0 || ^15.0.0",
-    "react-sizeme": "^2.0.0"
+    "react-sizeme": "^2.3.2"
   },
   "config": {
     "commitizen": {
