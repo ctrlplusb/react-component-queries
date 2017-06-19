@@ -13,6 +13,9 @@
         "env",
         "stage-3",
         "react"
+      ],
+      "plugins": [
+        "transform-class-properties"
       ]
     },
     "umd": {
@@ -20,6 +23,9 @@
         ["env", { "es2015": { "modules": false } }],
         "stage-3",
         "react"
+      ],
+      "plugins": [
+        "transform-class-properties"
       ]
     }
   }
