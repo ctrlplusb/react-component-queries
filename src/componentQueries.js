@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import invariant from 'invariant';
 import sizeMe from 'react-sizeme';
 import mergeWith from './utils/mergeWith';

@@ -59,6 +59,7 @@
     "lodash-webpack-plugin": "0.10.0",
     "mocha": "3.0.2",
     "path": "0.12.7",
+    "prop-types": "^15.0.0-0",
     "react": "15.3.1",
     "react-addons-test-utils": "15.3.1",
     "react-dom": "15.3.1",
@@ -71,9 +72,10 @@
     "webpack-hot-middleware": "2.12.2"
   },
   "peerDependencies": {
+    "prop-types": "^15.0.0-0",
     "react": "^0.14.0 || ^15.0.0",
     "react-dom": "^0.14.0 || ^15.0.0",
-    "react-sizeme": "^2.0.0"
+    "react-sizeme": "^2.3.2"
   },
   "config": {
     "commitizen": {
