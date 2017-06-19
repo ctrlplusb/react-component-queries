@@ -15,7 +15,8 @@
         "react"
       ],
       "plugins": [
-        "transform-class-properties"
+        "transform-class-properties",
+        "lodash"
       ]
     },
     "umd": {
@@ -25,7 +26,8 @@
         "react"
       ],
       "plugins": [
-        "transform-class-properties"
+        "transform-class-properties",
+        "lodash"
       ]
     }
   }

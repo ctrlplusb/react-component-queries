@@ -1,11 +1,13 @@
 import { resolve as resolvePath } from 'path'
 import webpack from 'webpack'
 import appRootDir from 'app-root-dir'
+import LodashModuleReplacementPlugin from 'lodash-webpack-plugin'
 import { getPackageJson, removeEmpty, ifElse } from '../utils'
 
 function webpackConfigFactory({ target }) {
   const libraryName = getPackageJson().name
   const minimize = target === 'umd-min'
+  const env = process.env.NODE_ENV
 
   return {
     entry: {
@@ -32,6 +34,18 @@ function webpackConfigFactory({ target }) {
         commonjs: 'react-dom',
         commonjs2: 'react-dom',
       },
+      'prop-types': {
+        root: 'PropTypes',
+        amd: 'prop-types',
+        commonjs: 'prop-types',
+        commonjs2: 'prop-types',
+      },
+      'react-sizeme': {
+        root: 'SizeMe',
+        commonjs2: 'react-sizeme',
+        commonjs: 'react-sizeme',
+        amd: 'react-sizeme',
+      },
     },
     plugins: removeEmpty([
       new webpack.DefinePlugin({
@@ -57,6 +71,7 @@ function webpackConfigFactory({ target }) {
           },
         }),
       ),
+      ifElse(env === 'production')(new LodashModuleReplacementPlugin()),
     ]),
     module: {
       rules: [
