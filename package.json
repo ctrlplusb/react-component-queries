@@ -52,7 +52,7 @@
     "prop-types": "^15.0.0",
     "react": "^0.14.0 || ^15.0.0",
     "react-dom": "^0.14.0 || ^15.0.0",
-    "react-sizeme": "^2.3.3"
+    "react-sizeme": "^2.3.4"
   },
   "devDependencies": {
     "app-root-dir": "^1.0.2",
@@ -92,7 +92,7 @@
     "react": "^15.6.1",
     "react-addons-test-utils": "^15.6.0",
     "react-dom": "^15.6.1",
-    "react-sizeme": "^2.3.3",
+    "react-sizeme": "^2.3.4",
     "readline-sync": "^1.4.7",
     "rimraf": "^2.6.1",
     "sinon": "^2.3.4",
