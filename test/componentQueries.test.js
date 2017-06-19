@@ -78,6 +78,7 @@ describeWithDOM('Given the ComponentQueries library', () => {
         expect(sizeMeConfig).to.eql({
           monitorHeight: false,
           monitorWidth: true,
+          monitorPosition: false,
           refreshRate: 16,
         });
       });
@@ -90,6 +91,7 @@ describeWithDOM('Given the ComponentQueries library', () => {
           sizeMeConfig: {
             monitorHeight: true,
             monitorWidth: false,
+            monitorPosition: false,
             refreshRate: 200,
           },
         })(() => <div />);
@@ -97,6 +99,7 @@ describeWithDOM('Given the ComponentQueries library', () => {
         expect(sizeMeConfig).to.eql({
           monitorHeight: true,
           monitorWidth: false,
+          monitorPosition: false,
           refreshRate: 200,
         });
       });
@@ -111,6 +114,7 @@ describeWithDOM('Given the ComponentQueries library', () => {
           config: {
             monitorHeight: true,
             monitorWidth: false,
+            monitorPosition: false,
             refreshRate: 200,
             refreshMode: 'debounce',
             conflictResolver,
@@ -120,6 +124,7 @@ describeWithDOM('Given the ComponentQueries library', () => {
         expect(sizeMeConfig).to.eql({
           monitorHeight: true,
           monitorWidth: false,
+          monitorPosition: false,
           refreshRate: 200,
           refreshMode: 'debounce',
         });
@@ -141,6 +146,7 @@ describeWithDOM('Given the ComponentQueries library', () => {
         sizeMeConfig: {
           monitorWidth: true,
           monitorHeight: true,
+          monitorPosition: false,
         },
       })((props) => { receivedProps = props; return <div />; });
 
