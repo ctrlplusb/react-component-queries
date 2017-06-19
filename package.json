@@ -1,7 +1,7 @@
 {
-  "name": "npm-library-starter",
-  "version": "0.0.1",
-  "description": "Starter kit for npm libraries.",
+  "name": "react-component-queries",
+  "description": "Provide props to your Components based on their Width and/or Height.",
+  "version": "2.1.1",
   "license": "MIT",
   "main": "commonjs/index.js",
   "files": [
