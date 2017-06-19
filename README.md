@@ -9,8 +9,24 @@
 [![npm](https://img.shields.io/npm/v/react-component-queries.svg?style=flat-square)](http://npm.im/react-component-queries)
 [![MIT License](https://img.shields.io/npm/l/react-component-queries.svg?style=flat-square)](http://opensource.org/licenses/MIT)
 [![Codecov](https://img.shields.io/codecov/c/github/ctrlplusb/react-component-queries.svg?style=flat-square)](https://codecov.io/github/ctrlplusb/react-component-queries)
-[![Maintenance](https://img.shields.io/maintenance/yes/2016.svg?style=flat-square)]()
 
+```javascript
+import componentQueries from 'react-component-queries'
+
+function MyComponent({ mode }) {
+  return (
+    <div>
+      { mode === 'wide'
+        ? <WideVariant />
+        : <NarrowVariant /> }
+    </div>
+  )
+}
+
+componentQueries(
+  ({ width }) => ({ mode: width < 768 ? 'narrow' : 'wide' }),
+)(MyComponent);
+```
 
 * Responsive Components!
 * A useful abstraction on the bare metal `react-sizeme` component.
@@ -33,7 +49,7 @@
 
 ## Overview
 
-`react-component-queries` is a useful abstraction of the [`react-sizeme`](https://github.com/ctrlplusb/react-sizeme) library.  It allows you to define queries against the dimensions of your Component in order to produce custom props for your Component. 
+`react-component-queries` is a useful abstraction of the [`react-sizeme`](https://github.com/ctrlplusb/react-sizeme) library.  It allows you to define queries against the dimensions of your Component in order to produce custom props for your Component.
 
 Any time the dimensions of your rendered Component changes the queries will automatically be run again.
 
@@ -71,7 +87,7 @@ componentQueries(
     if (width > 330 && width <=960) return { breakpoint: 'medium' };
     return { breakpoint: 'large' };
   },
-  // You can have multiple queries, and the props that are returned can 
+  // You can have multiple queries, and the props that are returned can
   // be of any type.  Boolean's are often useful.
   ({ width }) => ({ isMassive: width > 1000000 })
 )(MyComponent);
@@ -82,7 +98,7 @@ The above example will result in a `breakpoint` and an `isMassive` prop being pa
 ## Why use this instead of `react-sizeme`?
 
 [`react-sizeme`](https://github.com/ctrlplusb/react-sizeme) is great, however, it suffers with a couple of problems in my opinion:
-  
+
   1. It is raw in that it provides you with the actual dimensions of your component and then requires to execute logic within your component to establish the desired behaviour of your component.  This can be a bit tedious and polute your component with a lot of if-else statements.  
   2. It is possible that your component may gets spammed with updated `size` props. This is because _any_ time your component changes in size `react-sizeme` will kick in.
 
@@ -112,7 +128,7 @@ npm install react-sizeme react-component-queries --save
 
 ## API
 
-`react-component-queries` exports a single function to be used as an HOC around your existing components.  This function supports two modes of usage: _simple_ and _configured_. 
+`react-component-queries` exports a single function to be used as an HOC around your existing components.  This function supports two modes of usage: _simple_ and _configured_.
 
 ### _Simple_: `componentQueries(queries)`
 
@@ -183,7 +199,7 @@ componentQueries({
          - `current` (_Any_): The value of the conflicted prop provided by the most recently executed query function.
          - `key` (_Any_): The name of the prop which is in conflict.
 
-## Examples 
+## Examples
 
 Below are a few super simple examples highlighting the usage and capabilities of the library. They are using the ES6 syntax described above to define the queries.
 
@@ -276,7 +292,7 @@ Then say we rendered our component like so, passing in a custom prop:
 
 ```
 ReactDOM.render(<MyComponent foo="zip" />, container);
-``` 
+```
 
 In this case the value of `foo` would resolve to "zip".
 
@@ -306,7 +322,7 @@ const MyComponent = componentQueries({
     if (key === 'className') {
       return prev.concat(' ', current);
     }
-    // Otherwise we return the current value, overriding the prev value. 
+    // Otherwise we return the current value, overriding the prev value.
     return current;
   }
 })(ComponentToWrap);
@@ -327,7 +343,7 @@ Then the props that would be resolved would be:
 }
 ```
 
---- 
+---
 
 ### Credits
 
