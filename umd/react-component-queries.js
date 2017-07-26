@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("prop-types"), require("react"), require("react-sizeme"));
+		module.exports = factory(require("react"), require("prop-types"), require("react-sizeme"));
 	else if(typeof define === 'function' && define.amd)
-		define(["prop-types", "react", "react-sizeme"], factory);
+		define(["react", "prop-types", "react-sizeme"], factory);
 	else if(typeof exports === 'object')
-		exports["react-component-queries"] = factory(require("prop-types"), require("react"), require("react-sizeme"));
+		exports["react-component-queries"] = factory(require("react"), require("prop-types"), require("react-sizeme"));
 	else
-		root["react-component-queries"] = factory(root["PropTypes"], root["React"], root["SizeMe"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_6__, __WEBPACK_EXTERNAL_MODULE_7__, __WEBPACK_EXTERNAL_MODULE_8__) {
+		root["react-component-queries"] = factory(root["React"], root["PropTypes"], root["SizeMe"]);
+})(this, function(__WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_5__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -43,9 +43,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
 /******/
-/******/ 	// identity function for calling harmony imports with the correct context
-/******/ 	__webpack_require__.i = function(value) { return value; };
-/******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -73,7 +70,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -87,33 +84,52 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _componentQueries = __webpack_require__(1);
+
+var _componentQueries2 = _interopRequireDefault(_componentQueries);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = _componentQueries2.default;
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(7);
+var _react = __webpack_require__(2);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(6);
+var _propTypes = __webpack_require__(3);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _invariant = __webpack_require__(5);
+var _invariant = __webpack_require__(4);
 
 var _invariant2 = _interopRequireDefault(_invariant);
 
-var _reactSizeme = __webpack_require__(8);
+var _reactSizeme = __webpack_require__(5);
 
 var _reactSizeme2 = _interopRequireDefault(_reactSizeme);
 
-var _mergeWith = __webpack_require__(3);
+var _mergeWith = __webpack_require__(6);
 
 var _mergeWith2 = _interopRequireDefault(_mergeWith);
 
-var _getDisplayName = __webpack_require__(2);
+var _getDisplayName = __webpack_require__(7);
 
 var _getDisplayName2 = _interopRequireDefault(_getDisplayName);
 
-var _shallowEqual = __webpack_require__(4);
+var _shallowEqual = __webpack_require__(8);
 
 var _shallowEqual2 = _interopRequireDefault(_shallowEqual);
 
@@ -315,107 +331,19 @@ function componentQueries() {
 exports.default = componentQueries;
 
 /***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _componentQueries = __webpack_require__(0);
-
-var _componentQueries2 = _interopRequireDefault(_componentQueries);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = _componentQueries2.default;
-
-/***/ }),
 /* 2 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-// :: Component => String
-function getDisplayName(WrappedComponent) {
-  return WrappedComponent.displayName || WrappedComponent.name || 'Component';
-}
-
-exports.default = getDisplayName;
+module.exports = __WEBPACK_EXTERNAL_MODULE_2__;
 
 /***/ }),
 /* 3 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-// :: (Object, Object, (any, any) => any) => Object
-var mergeWith = function mergeWith(x, y, fn) {
-  var result = Object.assign({}, x);
-
-  Object.keys(y).forEach(function (key) {
-    if (x[key] && y[key]) {
-      result[key] = fn(x[key], y[key], key);
-    } else {
-      result[key] = y[key];
-    }
-  });
-
-  return result;
-};
-
-exports.default = mergeWith;
+module.exports = __WEBPACK_EXTERNAL_MODULE_3__;
 
 /***/ }),
 /* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = shallowEqual;
-// Taken from react-redux.  Thanks Dan!
-
-function shallowEqual(objA, objB) {
-  if (objA === objB) {
-    return true;
-  }
-
-  var keysA = Object.keys(objA);
-  var keysB = Object.keys(objB);
-
-  if (keysA.length !== keysB.length) {
-    return false;
-  }
-
-  // Test for A's keys different from B.
-  var hasOwn = Object.prototype.hasOwnProperty;
-  for (var i = 0; i < keysA.length; i += 1) {
-    // eslint-disable-line no-plusplus
-    if (!hasOwn.call(objB, keysA[i]) || objA[keysA[i]] !== objB[keysA[i]]) {
-      return false;
-    }
-  }
-
-  return true;
-}
-
-/***/ }),
-/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -473,22 +401,91 @@ module.exports = invariant;
 
 
 /***/ }),
-/* 6 */
+/* 5 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE_6__;
+module.exports = __WEBPACK_EXTERNAL_MODULE_5__;
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+// :: (Object, Object, (any, any) => any) => Object
+var mergeWith = function mergeWith(x, y, fn) {
+  var result = Object.assign({}, x);
+
+  Object.keys(y).forEach(function (key) {
+    if (x[key] && y[key]) {
+      result[key] = fn(x[key], y[key], key);
+    } else {
+      result[key] = y[key];
+    }
+  });
+
+  return result;
+};
+
+exports.default = mergeWith;
 
 /***/ }),
 /* 7 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE_7__;
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+// :: Component => String
+function getDisplayName(WrappedComponent) {
+  return WrappedComponent.displayName || WrappedComponent.name || 'Component';
+}
+
+exports.default = getDisplayName;
 
 /***/ }),
 /* 8 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE_8__;
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = shallowEqual;
+// Taken from react-redux.  Thanks Dan!
+
+function shallowEqual(objA, objB) {
+  if (objA === objB) {
+    return true;
+  }
+
+  var keysA = Object.keys(objA);
+  var keysB = Object.keys(objB);
+
+  if (keysA.length !== keysB.length) {
+    return false;
+  }
+
+  // Test for A's keys different from B.
+  var hasOwn = Object.prototype.hasOwnProperty;
+  for (var i = 0; i < keysA.length; i += 1) {
+    // eslint-disable-line no-plusplus
+    if (!hasOwn.call(objB, keysA[i]) || objA[keysA[i]] !== objB[keysA[i]]) {
+      return false;
+    }
+  }
+
+  return true;
+}
 
 /***/ })
 /******/ ]);
