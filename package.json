@@ -4,21 +4,14 @@
   "version": "2.1.3",
   "license": "MIT",
   "main": "commonjs/index.js",
-  "files": [
-    "*.js",
-    "*.md",
-    "umd",
-    "commonjs"
-  ],
+  "files": ["*.js", "*.md", "umd", "commonjs"],
   "repository": {
     "type": "git",
     "url": "https://github.com/ctrlplusb/npm-library-starter.git"
   },
   "homepage": "https://github.com/ctrlplusb/npm-library-starter#readme",
   "author": "Sean Matheson <sean@ctrlplusb.com>",
-  "keywords": [
-    "library"
-  ],
+  "keywords": ["library"],
   "scripts": {
     "build": "babel-node ./tools/scripts/build.js",
     "check": "npm run test",
@@ -32,18 +25,13 @@
     "test:coverage:deploy": "npm run test:coverage && codecov"
   },
   "jest": {
-    "collectCoverageFrom": [
-      "src/**/*.{js,jsx}"
-    ],
+    "collectCoverageFrom": ["src/**/*.{js,jsx}"],
     "testPathIgnorePatterns": [
       "<rootDir>/(commonjs|coverage|node_modules|tools|umd)/"
     ]
   },
   "lint-staged": {
-    "*.js": [
-      "prettier-eslint --write",
-      "git add"
-    ]
+    "*.js": ["prettier-eslint --write \"src/**/*\"", "git add"]
   },
   "dependencies": {
     "invariant": "^2.2.2"
