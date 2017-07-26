@@ -5,7 +5,7 @@ const mergeWith = (x, y, fn) => {
   Object.keys(y).forEach((key) => {
     if (x[key] && y[key]) {
       result[key] = fn(x[key], y[key], key)
-    } else if (y[key]) {
+    } else {
       result[key] = y[key]
     }
   })
