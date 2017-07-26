@@ -10,7 +10,7 @@ var mergeWith = function mergeWith(x, y, fn) {
   Object.keys(y).forEach(function (key) {
     if (x[key] && y[key]) {
       result[key] = fn(x[key], y[key], key);
-    } else if (y[key]) {
+    } else {
       result[key] = y[key];
     }
   });

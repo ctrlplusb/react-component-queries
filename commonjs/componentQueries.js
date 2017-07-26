@@ -48,7 +48,8 @@ var defaultConfig = {
   monitorHeight: false,
   monitorWidth: true,
   refreshRate: 16,
-  pure: true
+  pure: true,
+  noPlaceholder: false
 };
 
 var defaultConflictResolver = function defaultConflictResolver(x, y) {
@@ -94,13 +95,15 @@ function componentQueries() {
           monitorHeight = _params$0$config.monitorHeight,
           monitorWidth = _params$0$config.monitorWidth,
           refreshRate = _params$0$config.refreshRate,
-          refreshMode = _params$0$config.refreshMode;
+          refreshMode = _params$0$config.refreshMode,
+          noPlaceholder = _params$0$config.noPlaceholder;
 
       sizeMeConfig = {
         monitorHeight: monitorHeight != null ? monitorHeight : defaultConfig.monitorHeight,
         monitorWidth: monitorWidth != null ? monitorWidth : defaultConfig.monitorWidth,
         refreshRate: refreshRate != null ? refreshRate : defaultConfig.refreshRate,
-        refreshMode: refreshMode != null ? refreshMode : defaultConfig.refreshMode
+        refreshMode: refreshMode != null ? refreshMode : defaultConfig.refreshMode,
+        noPlaceholder: noPlaceholder != null ? noPlaceholder : defaultConfig.noPlaceholder
       };
     }
     conflictResolver = conflictResolver || params[0].conflictResolver || defaultConflictResolver;
