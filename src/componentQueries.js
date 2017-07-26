@@ -11,6 +11,7 @@ const defaultConfig = {
   monitorWidth: true,
   refreshRate: 16,
   pure: true,
+  noPlaceholder: false,
 }
 
 const defaultConflictResolver = (x, y) => y
@@ -49,20 +50,19 @@ function componentQueries(...params) {
         monitorWidth,
         refreshRate,
         refreshMode,
+        noPlaceholder,
       } = params[0].config
       sizeMeConfig = {
-        monitorHeight: monitorHeight != null
-          ? monitorHeight
-          : defaultConfig.monitorHeight,
-        monitorWidth: monitorWidth != null
-          ? monitorWidth
-          : defaultConfig.monitorWidth,
-        refreshRate: refreshRate != null
-          ? refreshRate
-          : defaultConfig.refreshRate,
-        refreshMode: refreshMode != null
-          ? refreshMode
-          : defaultConfig.refreshMode,
+        monitorHeight:
+          monitorHeight != null ? monitorHeight : defaultConfig.monitorHeight,
+        monitorWidth:
+          monitorWidth != null ? monitorWidth : defaultConfig.monitorWidth,
+        refreshRate:
+          refreshRate != null ? refreshRate : defaultConfig.refreshRate,
+        refreshMode:
+          refreshMode != null ? refreshMode : defaultConfig.refreshMode,
+        noPlaceholder:
+          noPlaceholder != null ? noPlaceholder : defaultConfig.noPlaceholder,
       }
     }
     conflictResolver =

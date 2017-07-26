@@ -92,6 +92,7 @@ describe('Given the ComponentQueries library', () => {
           sizeMeConfig: {
             monitorHeight: true,
             monitorWidth: false,
+            noPlaceholder: true,
             refreshRate: 200,
           },
         })(() => <div />)
@@ -100,6 +101,7 @@ describe('Given the ComponentQueries library', () => {
           monitorHeight: true,
           monitorWidth: false,
           refreshRate: 200,
+          noPlaceholder: true,
         })
       })
     })
@@ -115,6 +117,7 @@ describe('Given the ComponentQueries library', () => {
             monitorWidth: false,
             refreshRate: 200,
             refreshMode: 'debounce',
+            noPlaceholder: true,
             conflictResolver,
           },
         })(() => <div />)
@@ -124,6 +127,7 @@ describe('Given the ComponentQueries library', () => {
           monitorWidth: false,
           refreshRate: 200,
           refreshMode: 'debounce',
+          noPlaceholder: true,
         })
       })
     })
