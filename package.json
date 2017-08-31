@@ -12,9 +12,9 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/ctrlplusb/npm-library-starter.git"
+    "url": "https://github.com/ctrlplusb/react-component-queries.git"
   },
-  "homepage": "https://github.com/ctrlplusb/npm-library-starter#readme",
+  "homepage": "https://github.com/ctrlplusb/react-component-queries#readme",
   "author": "Sean Matheson <sean@ctrlplusb.com>",
   "keywords": [
     "library"
