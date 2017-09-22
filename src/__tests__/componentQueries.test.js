@@ -15,7 +15,7 @@ describe('Given the ComponentQueries library', () => {
   beforeEach(() => {
     sinonSandbox = sinon.sandbox.create()
 
-    sinonSandbox.stub(SizeMe, 'default').callsFake((config) => {
+    sinonSandbox.stub(SizeMe, 'default').callsFake(config => {
       sizeMeConfig = config
       return x => x
     })
@@ -148,7 +148,7 @@ describe('Given the ComponentQueries library', () => {
           monitorWidth: true,
           monitorHeight: true,
         },
-      })((props) => {
+      })(props => {
         receivedProps = props
         return <div />
       })
@@ -275,7 +275,7 @@ describe('Given the ComponentQueries library', () => {
       const ComponentQueriedComponent = componentQueries(
         ({ width }) => (width <= 100 ? { foo: 'bar' } : {}),
         ({ width }) => (width <= 100 ? { foo: 'baz' } : {}),
-      )((props) => {
+      )(props => {
         receivedProps = props
         return <div />
       })
@@ -300,7 +300,7 @@ describe('Given the ComponentQueries library', () => {
           ({ width }) => (width <= 100 ? { foo: 'bob' } : {}),
         ],
         conflictResolver: (x, y, key) => (key === 'foo' ? x.concat(' ', y) : y),
-      })((props) => {
+      })(props => {
         receivedProps = props
         return <div />
       })
