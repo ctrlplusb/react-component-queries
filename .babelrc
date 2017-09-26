@@ -1,6 +1,34 @@
 {
-  "presets": ["es2015", "stage-1", "react"],
-  "ignore": [
-    "/node_modules/"
-  ]
+  "presets": [
+    ["env", { "targets": { "node": true } }],
+    "stage-3",
+    "react"
+  ],
+  "plugins": [
+    "transform-class-properties"
+  ],
+  "env": {
+    "commonjs": {
+      "presets": [
+        "env",
+        "stage-3",
+        "react"
+      ],
+      "plugins": [
+        "transform-class-properties",
+        "lodash"
+      ]
+    },
+    "umd": {
+      "presets": [
+        ["env", { "es2015": { "modules": false } }],
+        "stage-3",
+        "react"
+      ],
+      "plugins": [
+        "transform-class-properties",
+        "lodash"
+      ]
+    }
+  }
 }

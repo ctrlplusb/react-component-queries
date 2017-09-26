@@ -4,12 +4,29 @@
 </p>
 
 <p align='center'>
+
 [![Travis](https://img.shields.io/travis/ctrlplusb/react-component-queries.svg?style=flat-square)](https://travis-ci.org/ctrlplusb/react-component-queries)
 [![npm](https://img.shields.io/npm/v/react-component-queries.svg?style=flat-square)](http://npm.im/react-component-queries)
 [![MIT License](https://img.shields.io/npm/l/react-component-queries.svg?style=flat-square)](http://opensource.org/licenses/MIT)
 [![Codecov](https://img.shields.io/codecov/c/github/ctrlplusb/react-component-queries.svg?style=flat-square)](https://codecov.io/github/ctrlplusb/react-component-queries)
-[![Maintenance](https://img.shields.io/maintenance/yes/2016.svg?style=flat-square)]()
 
+```javascript
+import componentQueries from 'react-component-queries'
+
+function MyComponent({ mode }) {
+  return (
+    <div>
+      { mode === 'wide'
+        ? <WideVariant />
+        : <NarrowVariant /> }
+    </div>
+  )
+}
+
+componentQueries(
+  ({ width }) => ({ mode: width < 768 ? 'narrow' : 'wide' }),
+)(MyComponent);
+```
 
 * Responsive Components!
 * A useful abstraction on the bare metal `react-sizeme` component.
@@ -82,7 +99,7 @@ The above example will result in a `breakpoint` and an `isMassive` prop being pa
 
 [`react-sizeme`](https://github.com/ctrlplusb/react-sizeme) is great, however, it suffers with a couple of problems in my opinion:
 
-  1. It is raw in that it provides you with the actual dimensions of your component and then requires to execute logic within your component to establish the desired behaviour of your component.  This can be a bit tedious and polute your component with a lot of if-else statements.
+  1. It is raw in that it provides you with the actual dimensions of your component and then requires to execute logic within your component to establish the desired behaviour of your component.  This can be a bit tedious and polute your component with a lot of if-else statements.  
   2. It is possible that your component may gets spammed with updated `size` props. This is because _any_ time your component changes in size `react-sizeme` will kick in.
 
 `react-component-queries` was built to solve these problems. It solves problem 1 by moving the dimension based logic out of your component.  It then solves problem 2 by ensuring that your component will only be called for re-render if any of the prop values change.  That saves you some error prone boilerplate.
@@ -177,6 +194,7 @@ componentQueries({
       - `[monitorWidth]` (_Boolean_): If `true` then the width of your component will be tracked and provided within the `size` argument to your query functions. Defaults to `true`.
       - `[monitorHeight]` (_Boolean_): If `true` then the height of your component will be tracked and provided within the `size` argument to your query functions. Defaults to `false`.
       - `[refreshRate]` (_Number_): The maximum frequency, in milliseconds, at which size changes should be recalculated when changes in your Component's rendered size are being detected. This must not be set to lower than 16.  Defaults to `16`.
+      - `[noPlaceholder]` (_Boolean_): By default we render a "placeholder" component initially so we can try and "prefetch" the expected size for your component. This is to avoid any unnecessary deep tree renders.  If you feel this is not an issue for your component case and you would like to get an eager render of your component then disable the placeholder using this config option. Defaults to `false`.
       - `[pure]` (_Boolean_): Indicates if your component should be considered "pure", i.e. it should only be rerendered if the result of your query functions change, or if new props are provided to the wrapped component. If you set it to false then the wrapped component will render _every_ time the size changes, even if it doesn't result in new query provided props. Defaults to `true`.
       - `[sizePassthrough]` (_Boolean_ || _String_): If you need the size object to be passed to your component on every render, settings this to true will pass it as the `size` prop.  If `sizePassthrough` is a _String_, the `size` object will be passed as the given string.
       - [`conflictResolver(prev, current, key) : Any`] \(_Function_): A custom function to use in order to resolve prop conflicts when two or more query functions return a prop with the same key.  This gives you an opportunity to do custom resolution for special prop types, e.g. `className` where you could instead concat the conflicted values.  The default implementation will return the value from the _last_ query function provided in the query array.  Please read the respective section further down in the readme for more info and examples of this.
