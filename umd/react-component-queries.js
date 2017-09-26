@@ -148,6 +148,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var defaultConfig = {
   monitorHeight: false,
   monitorWidth: true,
+  monitorPosition: false,
   refreshRate: 16,
   pure: true,
   noPlaceholder: false,
@@ -162,6 +163,7 @@ var defaultSizeMeConfig = function defaultSizeMeConfig() {
   return {
     monitorWidth: defaultConfig.monitorWidth,
     monitorHeight: defaultConfig.monitorHeight,
+    monitorPosition: defaultConfig.monitorPosition,
     refreshRate: defaultConfig.refreshRate
   };
 };
@@ -202,6 +204,7 @@ function componentQueries() {
       var _params$0$config = params[0].config,
           monitorHeight = _params$0$config.monitorHeight,
           monitorWidth = _params$0$config.monitorWidth,
+          monitorPosition = _params$0$config.monitorPosition,
           refreshRate = _params$0$config.refreshRate,
           refreshMode = _params$0$config.refreshMode,
           noPlaceholder = _params$0$config.noPlaceholder;
@@ -209,6 +212,7 @@ function componentQueries() {
       sizeMeConfig = {
         monitorHeight: monitorHeight != null ? monitorHeight : defaultConfig.monitorHeight,
         monitorWidth: monitorWidth != null ? monitorWidth : defaultConfig.monitorWidth,
+        monitorPosition: monitorPosition !== null ? monitorPosition : defaultConfig.monitorPosition,
         refreshRate: refreshRate != null ? refreshRate : defaultConfig.refreshRate,
         refreshMode: refreshMode != null ? refreshMode : defaultConfig.refreshMode,
         noPlaceholder: noPlaceholder != null ? noPlaceholder : defaultConfig.noPlaceholder

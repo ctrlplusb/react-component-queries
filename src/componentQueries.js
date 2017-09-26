@@ -9,6 +9,7 @@ import shallowEqual from './utils/shallowEqual'
 const defaultConfig = {
   monitorHeight: false,
   monitorWidth: true,
+  monitorPosition: false,
   refreshRate: 16,
   pure: true,
   noPlaceholder: false,
@@ -20,6 +21,7 @@ const defaultConflictResolver = (x, y) => y
 const defaultSizeMeConfig = () => ({
   monitorWidth: defaultConfig.monitorWidth,
   monitorHeight: defaultConfig.monitorHeight,
+  monitorPosition: defaultConfig.monitorPosition,
   refreshRate: defaultConfig.refreshRate,
 })
 
@@ -54,6 +56,7 @@ function componentQueries(...params) {
       const {
         monitorHeight,
         monitorWidth,
+        monitorPosition,
         refreshRate,
         refreshMode,
         noPlaceholder,
@@ -63,6 +66,10 @@ function componentQueries(...params) {
           monitorHeight != null ? monitorHeight : defaultConfig.monitorHeight,
         monitorWidth:
           monitorWidth != null ? monitorWidth : defaultConfig.monitorWidth,
+        monitorPosition:
+          monitorPosition !== null
+            ? monitorPosition
+            : defaultConfig.monitorPosition,
         refreshRate:
           refreshRate != null ? refreshRate : defaultConfig.refreshRate,
         refreshMode:
