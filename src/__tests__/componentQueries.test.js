@@ -4,8 +4,11 @@
 
 import React from 'react'
 import sinon from 'sinon'
-import { mount } from 'enzyme'
+import enzyme, { mount } from 'enzyme'
+import Adapter from 'enzyme-adapter-react-16'
 import * as SizeMe from 'react-sizeme'
+
+enzyme.configure({ adapter: new Adapter() })
 
 describe('Given the ComponentQueries library', () => {
   let componentQueries
