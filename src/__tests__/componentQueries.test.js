@@ -83,6 +83,7 @@ describe('Given the ComponentQueries library', () => {
         expect(sizeMeConfig).toMatchObject({
           monitorHeight: false,
           monitorWidth: true,
+          monitorPosition: false,
           refreshRate: 16,
         })
       })
@@ -94,6 +95,7 @@ describe('Given the ComponentQueries library', () => {
           queries: [() => ({})],
           sizeMeConfig: {
             monitorHeight: true,
+            monitorPosition: true,
             monitorWidth: false,
             noPlaceholder: true,
             refreshRate: 200,
@@ -103,6 +105,7 @@ describe('Given the ComponentQueries library', () => {
         expect(sizeMeConfig).toMatchObject({
           monitorHeight: true,
           monitorWidth: false,
+          monitorPosition: true,
           refreshRate: 200,
           noPlaceholder: true,
         })

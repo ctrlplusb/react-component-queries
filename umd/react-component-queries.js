@@ -107,7 +107,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _react = __webpack_require__(2);
 
-var _react2 = _interopRequireDefault(_react);
+var React = _interopRequireWildcard(_react);
 
 var _propTypes = __webpack_require__(3);
 
@@ -135,6 +135,8 @@ var _shallowEqual2 = _interopRequireDefault(_shallowEqual);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -146,9 +148,11 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var defaultConfig = {
   monitorHeight: false,
   monitorWidth: true,
+  monitorPosition: false,
   refreshRate: 16,
   pure: true,
-  noPlaceholder: false
+  noPlaceholder: false,
+  sizePassthrough: undefined
 };
 
 var defaultConflictResolver = function defaultConflictResolver(x, y) {
@@ -159,6 +163,7 @@ var defaultSizeMeConfig = function defaultSizeMeConfig() {
   return {
     monitorWidth: defaultConfig.monitorWidth,
     monitorHeight: defaultConfig.monitorHeight,
+    monitorPosition: defaultConfig.monitorPosition,
     refreshRate: defaultConfig.refreshRate
   };
 };
@@ -176,6 +181,7 @@ function componentQueries() {
   var sizeMeConfig = void 0;
   var pure = void 0;
   var conflictResolver = void 0;
+  var sizePassthrough = void 0;
 
   for (var _len = arguments.length, params = Array(_len), _key = 0; _key < _len; _key++) {
     params[_key] = arguments[_key];
@@ -187,12 +193,18 @@ function componentQueries() {
       // Old school config style.
       sizeMeConfig = params[0].sizeMeConfig || defaultSizeMeConfig();
       pure = defaultConfig.pure; // this didn't exist before, so we default it.
+      sizePassthrough = defaultConfig.sizePassthrough;
     } else if (params[0].config) {
       // New school config style.
       pure = params[0].config.pure;
+      sizePassthrough = params[0].config.sizePassthrough;
+      if (sizePassthrough === true) {
+        sizePassthrough = 'size';
+      }
       var _params$0$config = params[0].config,
           monitorHeight = _params$0$config.monitorHeight,
           monitorWidth = _params$0$config.monitorWidth,
+          monitorPosition = _params$0$config.monitorPosition,
           refreshRate = _params$0$config.refreshRate,
           refreshMode = _params$0$config.refreshMode,
           noPlaceholder = _params$0$config.noPlaceholder;
@@ -200,6 +212,7 @@ function componentQueries() {
       sizeMeConfig = {
         monitorHeight: monitorHeight != null ? monitorHeight : defaultConfig.monitorHeight,
         monitorWidth: monitorWidth != null ? monitorWidth : defaultConfig.monitorWidth,
+        monitorPosition: monitorPosition !== null ? monitorPosition : defaultConfig.monitorPosition,
         refreshRate: refreshRate != null ? refreshRate : defaultConfig.refreshRate,
         refreshMode: refreshMode != null ? refreshMode : defaultConfig.refreshMode,
         noPlaceholder: noPlaceholder != null ? noPlaceholder : defaultConfig.noPlaceholder
@@ -231,8 +244,8 @@ function componentQueries() {
   };
 
   return function WrapComponent(WrappedComponent) {
-    var ComponentWithComponentQueries = function (_Component) {
-      _inherits(ComponentWithComponentQueries, _Component);
+    var ComponentWithComponentQueries = function (_React$Component) {
+      _inherits(ComponentWithComponentQueries, _React$Component);
 
       function ComponentWithComponentQueries() {
         var _ref;
@@ -307,12 +320,16 @@ function componentQueries() {
 
           var allProps = (0, _mergeWith2.default)(this.state.queryResult, otherProps, mergeWithCustomizer);
 
-          return _react2.default.createElement(WrappedComponent, allProps);
+          if (sizePassthrough) {
+            allProps[sizePassthrough] = size;
+          }
+
+          return React.createElement(WrappedComponent, allProps);
         }
       }]);
 
       return ComponentWithComponentQueries;
-    }(_react.Component);
+    }(React.Component);
 
     ComponentWithComponentQueries.displayName = 'ComponentQueries(' + (0, _getDisplayName2.default)(WrappedComponent) + ')';
     ComponentWithComponentQueries.propTypes = {

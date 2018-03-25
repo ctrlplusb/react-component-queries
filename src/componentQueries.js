@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import * as React from 'react'
 import PropTypes from 'prop-types'
 import invariant from 'invariant'
 import sizeMe from 'react-sizeme'
@@ -9,9 +9,11 @@ import shallowEqual from './utils/shallowEqual'
 const defaultConfig = {
   monitorHeight: false,
   monitorWidth: true,
+  monitorPosition: false,
   refreshRate: 16,
   pure: true,
   noPlaceholder: false,
+  sizePassthrough: undefined,
 }
 
 const defaultConflictResolver = (x, y) => y
@@ -19,6 +21,7 @@ const defaultConflictResolver = (x, y) => y
 const defaultSizeMeConfig = () => ({
   monitorWidth: defaultConfig.monitorWidth,
   monitorHeight: defaultConfig.monitorHeight,
+  monitorPosition: defaultConfig.monitorPosition,
   refreshRate: defaultConfig.refreshRate,
 })
 
@@ -35,19 +38,25 @@ function componentQueries(...params) {
   let sizeMeConfig
   let pure
   let conflictResolver
-
+  let sizePassthrough
   if (params.length === 1 && params[0].queries) {
     queries = params[0].queries || []
     if (params[0].sizeMeConfig) {
       // Old school config style.
       sizeMeConfig = params[0].sizeMeConfig || defaultSizeMeConfig()
       pure = defaultConfig.pure // this didn't exist before, so we default it.
+      sizePassthrough = defaultConfig.sizePassthrough
     } else if (params[0].config) {
       // New school config style.
       pure = params[0].config.pure
+      sizePassthrough = params[0].config.sizePassthrough
+      if (sizePassthrough === true) {
+        sizePassthrough = 'size'
+      }
       const {
         monitorHeight,
         monitorWidth,
+        monitorPosition,
         refreshRate,
         refreshMode,
         noPlaceholder,
@@ -57,6 +66,10 @@ function componentQueries(...params) {
           monitorHeight != null ? monitorHeight : defaultConfig.monitorHeight,
         monitorWidth:
           monitorWidth != null ? monitorWidth : defaultConfig.monitorWidth,
+        monitorPosition:
+          monitorPosition !== null
+            ? monitorPosition
+            : defaultConfig.monitorPosition,
         refreshRate:
           refreshRate != null ? refreshRate : defaultConfig.refreshRate,
         refreshMode:
@@ -102,7 +115,7 @@ function componentQueries(...params) {
   }
 
   return function WrapComponent(WrappedComponent) {
-    class ComponentWithComponentQueries extends Component {
+    class ComponentWithComponentQueries extends React.Component {
       static displayName = `ComponentQueries(${getDisplayName(
         WrappedComponent,
       )})`
@@ -182,6 +195,10 @@ function componentQueries(...params) {
           otherProps,
           mergeWithCustomizer,
         )
+
+        if (sizePassthrough) {
+          allProps[sizePassthrough] = size
+        }
 
         return <WrappedComponent {...allProps} />
       }

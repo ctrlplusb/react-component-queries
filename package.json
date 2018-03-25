@@ -1,7 +1,7 @@
 {
   "name": "react-component-queries",
-  "description": "Provide props to your Components based on their Width and/or Height.",
   "version": "2.2.0",
+  "description": "Provide props to your Components based on their Width and/or Height.",
   "license": "MIT",
   "main": "commonjs/index.js",
   "files": [
@@ -63,8 +63,8 @@
     "eslint": "^4.7.2",
     "eslint-config-airbnb": "^15.1.0",
     "eslint-plugin-import": "^2.7.0",
-    "eslint-plugin-jsx-a11y": "^5.0.3",
-    "eslint-plugin-react": "^7.3.0",
+    "eslint-plugin-jsx-a11y": "^5.1.1",
+    "eslint-plugin-react": "^7.4.0",
     "gzip-size": "^4.0.0",
     "husky": "^0.14.3",
     "in-publish": "^2.0.0",

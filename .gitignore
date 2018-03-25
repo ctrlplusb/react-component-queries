@@ -13,3 +13,5 @@ coverage
 
 # Build output
 build
+
+.DS_Store

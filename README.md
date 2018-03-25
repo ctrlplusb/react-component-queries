@@ -110,7 +110,7 @@ So, to recap, some of the benefits of using this abstraction are:
 
   - Simplify your components by moving the dimension logic away from them, which in turn is easier to test in isolation.
   - `shouldComponentUpdate` is implemented on your behalf.
-  - The _query functions_ themselves can be formed into a reusable library of queries for all your components.  
+  - The _query functions_ themselves can be formed into a reusable library of queries for all your components.
 
 I am not trying to take away from `react-sizeme`, but I want to highlight that it's a bit more of a low level HOC, and if you want to use it you should be aware of the problems above and consider using your own abstraction or this one.
 
@@ -156,7 +156,7 @@ componentQueries(
 
   - `query(size, [ownProps]) : props` (_Function_): A query function which can be provided as a set of arguments, or can be contained within an array containing one or more queries.
     - `size` (_Object_): Contains the current dimensions of your wrapped component. As the default configuration is being used, it will only contain th e `width` dimension.
-       - `width` (_Number_): The current width of your component.  
+       - `width` (_Number_): The current width of your component.
     - [`ownProps`] \(_Object_): The additional props which have been provided to your wrapped component.
 
 ### _Configured_: `componentQueries(config)`
@@ -175,7 +175,8 @@ componentQueries({
     monitorWidth: true,
     monitorHeight: false,
     refreshRate: 16,
-    pure: true
+    pure: true,
+    sizePassthrough: 'componentDimensions'
   }
 })(MyComponent)
 ```
@@ -186,8 +187,8 @@ componentQueries({
     - `queries` (_Array_): An array of query functions:
       - `query(size, [ownProps]) : props` (_Function_): A query function which can be provided as a set of arguments, or can be contained within an array containing one or more queries.
         - `size` (_Object_): Contains the current dimensions of your wrapped component.
-          - `[width]` (_Number_): Will only be provided if the `monitorWidth` configuration option is set to `true`. The current width of your component.  
-          - `[height]` (_Number_): Will only be provided if the `monitorHeight` configuration option is set to `true`. The current height of your component.  
+          - `[width]` (_Number_): Will only be provided if the `monitorWidth` configuration option is set to `true`. The current width of your component.
+          - `[height]` (_Number_): Will only be provided if the `monitorHeight` configuration option is set to `true`. The current height of your component.
         - [`ownProps`] \(_Object_): The additional props which have been provided to your wrapped component.
     - `[config]` (_Object_): Custom configuration.
       - `[monitorWidth]` (_Boolean_): If `true` then the width of your component will be tracked and provided within the `size` argument to your query functions. Defaults to `true`.
@@ -195,6 +196,7 @@ componentQueries({
       - `[refreshRate]` (_Number_): The maximum frequency, in milliseconds, at which size changes should be recalculated when changes in your Component's rendered size are being detected. This must not be set to lower than 16.  Defaults to `16`.
       - `[noPlaceholder]` (_Boolean_): By default we render a "placeholder" component initially so we can try and "prefetch" the expected size for your component. This is to avoid any unnecessary deep tree renders.  If you feel this is not an issue for your component case and you would like to get an eager render of your component then disable the placeholder using this config option. Defaults to `false`.
       - `[pure]` (_Boolean_): Indicates if your component should be considered "pure", i.e. it should only be rerendered if the result of your query functions change, or if new props are provided to the wrapped component. If you set it to false then the wrapped component will render _every_ time the size changes, even if it doesn't result in new query provided props. Defaults to `true`.
+      - `[sizePassthrough]` (_Boolean_ || _String_): If you need the size object to be passed to your component on every render, settings this to true will pass it as the `size` prop.  If `sizePassthrough` is a _String_, the `size` object will be passed as the given string.
       - [`conflictResolver(prev, current, key) : Any`] \(_Function_): A custom function to use in order to resolve prop conflicts when two or more query functions return a prop with the same key.  This gives you an opportunity to do custom resolution for special prop types, e.g. `className` where you could instead concat the conflicted values.  The default implementation will return the value from the _last_ query function provided in the query array.  Please read the respective section further down in the readme for more info and examples of this.
          - `prev` (_Any_): The value of the conflicted prop provided by the previously executed query function.
          - `current` (_Any_): The value of the conflicted prop provided by the most recently executed query function.
@@ -274,7 +276,7 @@ As you can see we expose a `sizeMeConfig`, please see the [`react-sizeme`](https
 
 ## Prop Conflict Handling
 
-As it is possible for you to provide props from multiple queries there could be cases where prop clashing occurs.  By default we have an order of preference for which prop value should be resolved in the case of conflicts.  
+As it is possible for you to provide props from multiple queries there could be cases where prop clashing occurs.  By default we have an order of preference for which prop value should be resolved in the case of conflicts.
 
 __The rule is:__ Custom passed in props take preference followed by the last item in the query collection.
 
