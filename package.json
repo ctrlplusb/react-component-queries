@@ -2,7 +2,7 @@
   "name": "react-component-queries",
   "description":
     "Provide props to your Components based on their Width and/or Height.",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "license": "MIT",
   "main": "dist/react-component-queries.js",
   "files": ["*.js", "*.md", "dist"],
