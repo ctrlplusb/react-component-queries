@@ -3,30 +3,23 @@
 /* eslint-disable no-underscore-dangle */
 
 import React from 'react'
-import sinon from 'sinon'
 import enzyme, { mount } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16'
-import * as SizeMe from 'react-sizeme'
 
 enzyme.configure({ adapter: new Adapter() })
 
 describe('Given the ComponentQueries library', () => {
   let componentQueries
   let sizeMeConfig
-  let sinonSandbox
 
   beforeEach(() => {
-    sinonSandbox = sinon.sandbox.create()
-
-    sinonSandbox.stub(SizeMe, 'default').callsFake(config => {
+    jest.doMock('react-sizeme', () => config => {
       sizeMeConfig = config
       return x => x
     })
 
     componentQueries = require('../componentQueries').default
   })
-
-  afterEach(() => sinonSandbox.restore())
 
   describe('When setting up the ComponentQueries HOC', () => {
     describe('And no queries are provided', () => {
@@ -190,20 +183,20 @@ describe('Given the ComponentQueries library', () => {
       const instance = mounted.instance()
 
       // Set up a spy on the render
-      const renderSpy = sinonSandbox.spy(instance, 'render')
-      expect(renderSpy.callCount).toEqual(0)
+      const renderSpy = jest.spyOn(instance, 'render')
+      expect(renderSpy).toHaveBeenCalledTimes(0)
 
       // Change the width so that the queries produce a new result.
       mounted.setProps({ size: { width: 150 }, foo: 'bar' })
-      expect(renderSpy.callCount).toEqual(1)
+      expect(renderSpy).toHaveBeenCalledTimes(1)
 
       // Change the width so that the queries produce the same result.
       mounted.setProps({ size: { width: 120 }, foo: 'bar' })
-      expect(renderSpy.callCount).toEqual(1)
+      expect(renderSpy).toHaveBeenCalledTimes(1)
 
       // Change the value of an "other" prop should cause a new render.
       mounted.setProps({ size: { width: 120 }, foo: 'zip' })
-      expect(renderSpy.callCount).toEqual(2)
+      expect(renderSpy).toHaveBeenCalledTimes(2)
     })
 
     it('Then an impure component should always render', () => {
@@ -221,16 +214,16 @@ describe('Given the ComponentQueries library', () => {
       const instance = mounted.instance()
 
       // Set up a spy on the render
-      const renderSpy = sinonSandbox.spy(instance, 'render')
-      expect(renderSpy.callCount).toEqual(0)
+      const renderSpy = jest.spyOn(instance, 'render')
+      expect(renderSpy).toHaveBeenCalledTimes(0)
 
       // Set the props causes a rerender.
       mounted.setProps({ size: { width: 150 }, foo: 'bar' })
-      expect(renderSpy.callCount).toEqual(1)
+      expect(renderSpy).toHaveBeenCalledTimes(1)
 
       // Set the same props causes a rerender.
       mounted.setProps({ size: { width: 150 }, foo: 'bar' })
-      expect(renderSpy.callCount).toEqual(2)
+      expect(renderSpy).toHaveBeenCalledTimes(2)
     })
 
     it('Then it should pass the "other" props to the queries', () => {
