@@ -1,27 +1,23 @@
 {
   "name": "react-component-queries",
-  "description": "Provide props to your Components based on their Width and/or Height.",
+  "description":
+    "Provide props to your Components based on their Width and/or Height.",
   "version": "2.2.0",
   "license": "MIT",
   "main": "dist/react-component-queries.js",
-  "files": [
-    "*.js",
-    "*.md",
-    "dist"
-  ],
+  "files": ["*.js", "*.md", "dist"],
   "repository": {
     "type": "git",
     "url": "https://github.com/ctrlplusb/react-component-queries.git"
   },
   "homepage": "https://github.com/ctrlplusb/react-component-queries#readme",
   "author": "Sean Matheson <sean@ctrlplusb.com>",
-  "keywords": [
-    "library"
-  ],
+  "keywords": ["library"],
   "scripts": {
     "build": "node ./tools/scripts/build.js",
     "clean": "rimraf ./dist && rimraf ./coverage",
-    "example:web": "echo 'Make sure to `cd example/web && yarn install`' && cd example/web && yarn run start",
+    "example:web":
+      "echo 'Make sure to `cd example/web && yarn install`' && cd example/web && yarn run start",
     "lint": "eslint src",
     "precommit": "lint-staged && npm run test",
     "prepublish": "npm run build",
@@ -36,14 +32,14 @@
     "prop-types": "^15.0.0",
     "react": "^0.14.0 || ^15.0.0 || ^16.0.0",
     "react-dom": "^0.14.0 || ^15.0.0 || ^16.0.0",
-    "react-sizeme": "^2.3.5"
+    "react-sizeme": "^2.0.0"
   },
   "devDependencies": {
     "app-root-dir": "^1.0.2",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.0.0",
-    "babel-jest": "^21.0.2",
+    "babel-jest": "^22.4.3",
     "babel-plugin-external-helpers": "^6.22.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-polyfill": "^6.26.0",
@@ -52,26 +48,26 @@
     "babel-preset-stage-3": "^6.24.1",
     "babel-register": "^6.26.0",
     "change-case": "^3.0.2",
-    "codecov": "^2.3.0",
+    "codecov": "^3.0.0",
     "cross-env": "^5.0.5",
     "enzyme": "^3.1.0",
     "enzyme-adapter-react-16": "^1.0.2",
     "enzyme-to-json": "^3.1.4",
     "eslint": "^4.7.2",
-    "eslint-config-airbnb": "^15.1.0",
+    "eslint-config-airbnb": "^16.1.0",
     "eslint-config-prettier": "^2.9.0",
     "eslint-plugin-import": "^2.7.0",
-    "eslint-plugin-jsx-a11y": "^5.0.3",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.3.0",
     "gzip-size": "^4.0.0",
     "husky": "^0.14.3",
     "in-publish": "^2.0.0",
-    "jest": "^21.1.0",
-    "lint-staged": "^4.2.2",
+    "jest": "^22.4.3",
+    "lint-staged": "^7.0.0",
     "prettier": "^1.7.0",
     "pretty-bytes": "^4.0.2",
     "raf": "^3.4.0",
-    "ramda": "^0.24.1",
+    "ramda": "^0.25.0",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-sizeme": "^2.3.6",
@@ -82,15 +78,9 @@
     "rollup-plugin-uglify": "^3.0.0"
   },
   "jest": {
-    "collectCoverageFrom": [
-      "src/**/*.{js,jsx}"
-    ],
-    "snapshotSerializers": [
-      "<rootDir>/node_modules/enzyme-to-json/serializer"
-    ],
-    "testPathIgnorePatterns": [
-      "<rootDir>/(coverage|dist|node_modules|tools)/"
-    ]
+    "collectCoverageFrom": ["src/**/*.{js,jsx}"],
+    "snapshotSerializers": ["<rootDir>/node_modules/enzyme-to-json/serializer"],
+    "testPathIgnorePatterns": ["<rootDir>/(coverage|dist|node_modules|tools)/"]
   },
   "eslintConfig": {
     "root": true,
@@ -101,10 +91,7 @@
       "node": true,
       "jest": true
     },
-    "extends": [
-      "airbnb",
-      "prettier"
-    ],
+    "extends": ["airbnb", "prettier"],
     "rules": {
       "camelcase": 0,
       "import/prefer-default-export": 0,
@@ -113,29 +100,19 @@
       "no-underscore-dangle": 0,
       "react/no-array-index-key": 0,
       "react/react-in-jsx-scope": 0,
-      "semi": [
-        2,
-        "never"
-      ],
+      "semi": [2, "never"],
       "react/forbid-prop-types": 0,
       "react/jsx-filename-extension": 0,
       "react/sort-comp": 0
     }
   },
-  "eslintIgnore": [
-    "node_modules/",
-    "dist/",
-    "coverage/"
-  ],
+  "eslintIgnore": ["node_modules/", "dist/", "coverage/"],
   "prettier": {
     "semi": false,
     "singleQuote": true,
     "trailingComma": "all"
   },
   "lint-staged": {
-    "*.js": [
-      "prettier --write \"src/**/*.js\"",
-      "git add"
-    ]
+    "*.js": ["prettier --write \"src/**/*.js\"", "git add"]
   }
 }
