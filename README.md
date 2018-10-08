@@ -112,7 +112,7 @@ So, to recap, some of the benefits of using this abstraction are:
   - `shouldComponentUpdate` is implemented on your behalf.
   - The _query functions_ themselves can be formed into a reusable library of queries for all your components.  
 
-I am not trying to take away from `react-sizeme`, but I want to highlight that it's a bit more of a low level HOC, and if you want to use it you should be aware of the problems above and consider using your own abstraction or this one.
+I am not trying to take away from `react-sizeme`, but I want to highlight that it's a bit more of a low-level HOC, and if you want to use it you should be aware of the problems above and consider using your own abstraction or this one.
 
 ## Install
 
@@ -216,7 +216,7 @@ class MyComponent extends Component {
     return (
       <div>
         {/* We recieve the following props from our queries */}
-        I am at {this.props.scale} scale.
+        I am at {this.props.breakpoint} scale.
       </div>
     );
   }
@@ -276,7 +276,7 @@ As you can see we expose a `sizeMeConfig`, please see the [`react-sizeme`](https
 
 As it is possible for you to provide props from multiple queries there could be cases where prop clashing occurs.  By default we have an order of preference for which prop value should be resolved in the case of conflicts.  
 
-__The rule is:__ Custom passed in props take preference followed by the last item in the query collection.
+__The rule is:__ Custom passed-in props take preference followed by the last item in the query collection.
 
 Let's illustrate this given the following component:
 
